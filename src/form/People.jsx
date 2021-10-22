@@ -49,7 +49,7 @@ const People = () => {
           >
             {'Add Friend 💃'}
           </Button>
-          {typeof errors.people === 'string' ? <Typography variant='body2' sx={{ m: 4, color: 'red'}}>{errors.people}</Typography> : null}
+          {typeof errors.people === 'string' ? <Typography variant='body2' sx={{ m: 4, color: 'error.main'}}>{errors.people}</Typography> : null}
         </>
       )}
     </FieldArray>

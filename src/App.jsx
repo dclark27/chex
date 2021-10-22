@@ -23,7 +23,7 @@ function App () {
   }
 
   return (
-    <Container maxWidth='sm' sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'center', flexWrap: 'wrap'}}>
+    <Container maxWidth='sm' sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'center', flexWrap: 'wrap', textAlign: 'center'}}>
       <Typography variant='h3' sx={{ width: '100%', m: 12 }}>
 			🥄 Chex
       </Typography>
