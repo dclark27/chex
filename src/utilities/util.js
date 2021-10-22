@@ -42,7 +42,7 @@ const calculateTotals = (values) => {
         })
         splits[person].total += plateTotal
         splits[person].tip += tipCost
-        splits[person].tax += tipCost
+        splits[person].tax += taxCost
       }
     })
   })
