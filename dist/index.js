@@ -28,7 +28,7 @@ var __toModule = (module) => {
   return __exportStar(__markAsModule(__defProp(module != null ? __create(__getProtoOf(module)) : {}, "default", module && module.__esModule && "default" in module ? {get: () => module.default, enumerable: true} : {value: module, enumerable: true})), module);
 };
 
-// build/dist/pkg/common/formik.esm-6ec168eb.js
+// docs/snowpack/pkg/common/formik.esm-6ec168eb.js
 var require_formik_esm_6ec168eb = __commonJS((exports, module) => {
   __markAsModule(exports);
   __export(exports, {
@@ -2408,7 +2408,7 @@ var require_formik_esm_6ec168eb = __commonJS((exports, module) => {
   var ErrorMessage = /* @__PURE__ */ connect(ErrorMessageImpl);
 });
 
-// build/dist/env.js
+// docs/snowpack/env.js
 var env_exports = {};
 __export(env_exports, {
   MODE: () => MODE,
@@ -2419,7 +2419,7 @@ var MODE = "development";
 var NODE_ENV = "development";
 var SSR = false;
 
-// build/dist/pkg/common/_commonjsHelpers-8c19dec8.js
+// docs/snowpack/pkg/common/_commonjsHelpers-8c19dec8.js
 var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
 function getDefaultExportFromCjs(x2) {
   return x2 && x2.__esModule && Object.prototype.hasOwnProperty.call(x2, "default") ? x2["default"] : x2;
@@ -2437,7 +2437,7 @@ function commonjsRequire() {
   throw new Error("Dynamic requires are not currently supported by @rollup/plugin-commonjs");
 }
 
-// build/dist/pkg/common/index-d01087d6.js
+// docs/snowpack/pkg/common/index-d01087d6.js
 /*
 object-assign
 (c) Sindre Sorhus
@@ -2507,7 +2507,7 @@ var objectAssign = shouldUseNative() ? Object.assign : function(target, source) 
   return to;
 };
 
-// build/dist/pkg/common/index-4746603b.js
+// docs/snowpack/pkg/common/index-4746603b.js
 var react_development = createCommonjsModule(function(module, exports) {
   {
     (function() {
@@ -4053,7 +4053,7 @@ var react = createCommonjsModule(function(module) {
   }
 });
 
-// build/dist/pkg/react.js
+// docs/snowpack/pkg/react.js
 var Children = react.Children;
 var Component = react.Component;
 var Fragment = react.Fragment;
@@ -4083,7 +4083,7 @@ var useRef = react.useRef;
 var useState = react.useState;
 var version = react.version;
 
-// build/dist/pkg/common/index-1e005d10.js
+// docs/snowpack/pkg/common/index-1e005d10.js
 var scheduler_development = createCommonjsModule(function(module, exports) {
   {
     (function() {
@@ -22803,7 +22803,7 @@ var reactDom = createCommonjsModule(function(module) {
   }
 });
 
-// build/dist/pkg/common/index-a33282c9.js
+// docs/snowpack/pkg/common/index-a33282c9.js
 var reactIs_development = createCommonjsModule(function(module, exports) {
   {
     (function() {
@@ -22958,7 +22958,7 @@ var reactIs = createCommonjsModule(function(module) {
   }
 });
 
-// build/dist/pkg/common/hoist-non-react-statics.cjs-6eef923e.js
+// docs/snowpack/pkg/common/hoist-non-react-statics.cjs-6eef923e.js
 var REACT_STATICS = {
   childContextTypes: true,
   contextType: true,
@@ -23040,10 +23040,10 @@ function hoistNonReactStatics(targetComponent, sourceComponent, blacklist) {
 }
 var hoistNonReactStatics_cjs = hoistNonReactStatics;
 
-// build/dist/pkg/formik.js
+// docs/snowpack/pkg/formik.js
 var import_formik_esm_6ec168eb = __toModule(require_formik_esm_6ec168eb());
 
-// build/dist/pkg/common/index-1bb71ceb.js
+// docs/snowpack/pkg/common/index-1bb71ceb.js
 var ReactPropTypesSecret = "SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED";
 var ReactPropTypesSecret_1 = ReactPropTypesSecret;
 var printWarning = function() {
@@ -23509,7 +23509,7 @@ var propTypes = createCommonjsModule(function(module) {
   }
 });
 
-// build/dist/pkg/common/colorManipulator-d3448ceb.js
+// docs/snowpack/pkg/common/colorManipulator-d3448ceb.js
 var _extends_1 = createCommonjsModule(function(module) {
   function _extends3() {
     module.exports = _extends3 = Object.assign || function(target) {
@@ -28592,7 +28592,7 @@ function emphasize(color2, coefficient = 0.15) {
   return getLuminance(color2) > 0.5 ? darken(color2, coefficient) : lighten(color2, coefficient);
 }
 
-// build/dist/pkg/common/useThemeProps-bd4a190a.js
+// docs/snowpack/pkg/common/useThemeProps-bd4a190a.js
 var interopRequireDefault = createCommonjsModule(function(module) {
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -32467,7 +32467,7 @@ var useThemeProps_1 = createCommonjsModule(function(module, exports) {
   }
 });
 
-// build/dist/pkg/common/Transition-b098fd35.js
+// docs/snowpack/pkg/common/Transition-b098fd35.js
 function _setPrototypeOf(o, p2) {
   _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf2(o2, p3) {
     o2.__proto__ = p3;
@@ -32762,7 +32762,7 @@ Transition.ENTERING = ENTERING;
 Transition.ENTERED = ENTERED;
 Transition.EXITING = EXITING;
 
-// build/dist/pkg/common/index-91ac8028.js
+// docs/snowpack/pkg/common/index-91ac8028.js
 var useForkRef2 = createCommonjsModule(function(module, exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -33389,7 +33389,7 @@ var esm2 = /* @__PURE__ */ Object.freeze({
   config
 });
 
-// build/dist/pkg/common/capitalize-19700843.js
+// docs/snowpack/pkg/common/capitalize-19700843.js
 var capitalize2 = createCommonjsModule(function(module, exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -33399,7 +33399,7 @@ var capitalize2 = createCommonjsModule(function(module, exports) {
   exports.default = _default;
 });
 
-// build/dist/pkg/@mui/material/Button.js
+// docs/snowpack/pkg/@mui/material/Button.js
 var Ripple_1 = createCommonjsModule(function(module, exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -34730,7 +34730,7 @@ var Button = createCommonjsModule(function(module, exports) {
 var __pika_web_default_export_for_treeshaking__ = /* @__PURE__ */ getDefaultExportFromCjs(Button);
 var Button_default = __pika_web_default_export_for_treeshaking__;
 
-// build/dist/pkg/@mui/material/Stack.js
+// docs/snowpack/pkg/@mui/material/Stack.js
 var Stack_1 = createCommonjsModule(function(module, exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -34901,7 +34901,7 @@ var Stack = createCommonjsModule(function(module, exports) {
 var __pika_web_default_export_for_treeshaking__2 = /* @__PURE__ */ getDefaultExportFromCjs(Stack);
 var Stack_default = __pika_web_default_export_for_treeshaking__2;
 
-// build/dist/pkg/@mui/material/Typography.js
+// docs/snowpack/pkg/@mui/material/Typography.js
 var typographyClasses_1 = createCommonjsModule(function(module, exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -35162,7 +35162,7 @@ var Typography = createCommonjsModule(function(module, exports) {
 var __pika_web_default_export_for_treeshaking__3 = /* @__PURE__ */ getDefaultExportFromCjs(Typography);
 var Typography_default = __pika_web_default_export_for_treeshaking__3;
 
-// build/dist/pkg/@mui/material/Container.js
+// docs/snowpack/pkg/@mui/material/Container.js
 var containerClasses_1 = createCommonjsModule(function(module, exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -35404,7 +35404,7 @@ var Container = createCommonjsModule(function(module, exports) {
 var __pika_web_default_export_for_treeshaking__4 = /* @__PURE__ */ getDefaultExportFromCjs(Container);
 var Container_default = __pika_web_default_export_for_treeshaking__4;
 
-// build/dist/utilities/util.js
+// docs/dist/utilities/util.js
 var calculateTotals = (values3) => {
   let subtotal = 0;
   let taxTotal = 0;
@@ -35455,7 +35455,7 @@ var calculateTotals = (values3) => {
 };
 var util_default = calculateTotals;
 
-// build/dist/pkg/yup.js
+// docs/snowpack/pkg/yup.js
 var map;
 try {
   map = Map;
@@ -39151,7 +39151,7 @@ var ArraySchema = class extends BaseSchema {
 };
 create$7.prototype = ArraySchema.prototype;
 
-// build/dist/utilities/validation.js
+// docs/dist/utilities/validation.js
 var validationSchema = [
   create$6().shape({
     people: create$7().of(create$6().shape({
@@ -39172,7 +39172,7 @@ var validationSchema = [
 ];
 var validation_default = validationSchema;
 
-// build/dist/utilities/initialValues.js
+// docs/dist/utilities/initialValues.js
 var initialValues = {
   people: [
     {
@@ -39194,7 +39194,7 @@ var initialValues = {
 };
 var initialValues_default = initialValues;
 
-// build/dist/pkg/formik-mui.js
+// docs/snowpack/pkg/formik-mui.js
 var import_formik_esm_6ec168eb2 = __toModule(require_formik_esm_6ec168eb());
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -44252,7 +44252,7 @@ function TextField$1(_a) {
 }
 TextField$1.displayName = "FormikMaterialUITextField";
 
-// build/dist/pkg/common/useTheme-ca5e3d89.js
+// docs/snowpack/pkg/common/useTheme-ca5e3d89.js
 var useTheme_1 = createCommonjsModule(function(module, exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -44307,7 +44307,7 @@ var useTheme_1 = createCommonjsModule(function(module, exports) {
   }
 });
 
-// build/dist/pkg/@mui/material/Tooltip.js
+// docs/snowpack/pkg/@mui/material/Tooltip.js
 var utils = createCommonjsModule(function(module, exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -47042,7 +47042,7 @@ var Tooltip = createCommonjsModule(function(module, exports) {
 var __pika_web_default_export_for_treeshaking__5 = /* @__PURE__ */ getDefaultExportFromCjs(Tooltip);
 var Tooltip_default = __pika_web_default_export_for_treeshaking__5;
 
-// build/dist/form/People.js
+// docs/dist/form/People.js
 var People = () => {
   const {values: values3, errors} = (0, import_formik_esm_6ec168eb.u)();
   return /* @__PURE__ */ createElement(import_formik_esm_6ec168eb.c, {
@@ -47074,12 +47074,12 @@ var People = () => {
     onClick: () => push({name: ""})
   }, "Add Friend 💃"), typeof errors.people === "string" ? /* @__PURE__ */ createElement(Typography_default, {
     variant: "body2",
-    sx: {m: 4, color: "red"}
+    sx: {m: 4, color: "error.main"}
   }, errors.people) : null));
 };
 var People_default = People;
 
-// build/dist/form/Dish.js
+// docs/dist/form/Dish.js
 var Dish = ({index, remove}) => {
   const {values: values3} = (0, import_formik_esm_6ec168eb.u)();
   return /* @__PURE__ */ react.createElement(Stack_default, {
@@ -47137,7 +47137,7 @@ Dish.propTypes = {
 };
 var Dish_default = Dish;
 
-// build/dist/form/Dishes.js
+// docs/dist/form/Dishes.js
 var Dishes = () => {
   const {values: values3, errors} = (0, import_formik_esm_6ec168eb.u)();
   return /* @__PURE__ */ react.createElement(import_formik_esm_6ec168eb.c, {
@@ -47166,7 +47166,7 @@ var Dishes = () => {
 };
 var Dishes_default = Dishes;
 
-// build/dist/form/Cost.js
+// docs/dist/form/Cost.js
 var Cost = () => {
   return /* @__PURE__ */ react.createElement(react.Fragment, null, /* @__PURE__ */ react.createElement(Typography_default, null, "What did it cost? 💰"), /* @__PURE__ */ react.createElement(Stack_default, {
     direction: "row",
@@ -47190,7 +47190,7 @@ var Cost = () => {
 };
 var Cost_default = Cost;
 
-// build/dist/pkg/@mui/material/Divider.js
+// docs/snowpack/pkg/@mui/material/Divider.js
 var dividerClasses_1 = createCommonjsModule(function(module, exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -47515,7 +47515,7 @@ var Divider = createCommonjsModule(function(module, exports) {
 var __pika_web_default_export_for_treeshaking__6 = /* @__PURE__ */ getDefaultExportFromCjs(Divider);
 var Divider_default = __pika_web_default_export_for_treeshaking__6;
 
-// build/dist/pkg/@mui/material/Paper.js
+// docs/snowpack/pkg/@mui/material/Paper.js
 var paperClasses_1 = createCommonjsModule(function(module, exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -47758,7 +47758,7 @@ var Paper3 = createCommonjsModule(function(module, exports) {
 var __pika_web_default_export_for_treeshaking__7 = /* @__PURE__ */ getDefaultExportFromCjs(Paper3);
 var Paper_default = __pika_web_default_export_for_treeshaking__7;
 
-// build/dist/components/Receipts.js
+// docs/dist/components/Receipts.js
 var Receipts = ({tallies}) => {
   const {values: values3} = (0, import_formik_esm_6ec168eb.u)();
   return /* @__PURE__ */ react.createElement(Stack_default, {
@@ -47889,7 +47889,7 @@ Receipts.propTypes = {
 };
 var Receipts_default = Receipts;
 
-// build/dist/App.js
+// docs/dist/App.js
 function App() {
   const [step, setStep] = react.useState(0);
   const submitForm = (values3, {setSubmitting, setTouched}) => {
@@ -47899,7 +47899,7 @@ function App() {
   };
   return /* @__PURE__ */ react.createElement(Container_default, {
     maxWidth: "sm",
-    sx: {display: "flex", alignItems: "flex-start", justifyContent: "center", flexWrap: "wrap"}
+    sx: {display: "flex", alignItems: "flex-start", justifyContent: "center", flexWrap: "wrap", textAlign: "center"}
   }, /* @__PURE__ */ react.createElement(Typography_default, {
     variant: "h3",
     sx: {width: "100%", m: 12}
@@ -47929,7 +47929,7 @@ function App() {
 }
 var App_default = App;
 
-// build/dist/index.js
+// docs/dist/index.js
 import.meta.env = env_exports;
 reactDom.render(/* @__PURE__ */ react.createElement(react.StrictMode, null, /* @__PURE__ */ react.createElement(App_default, null)), document.getElementById("root"));
 if (void 0) {
