@@ -1,5 +1,5 @@
-# New Project
-
+# Chex 🥄 😋 🥄 
+Simple check splitting!
 > ✨ Bootstrapped with Create Snowpack App (CSA).
 
 ## Available Scripts
@@ -19,7 +19,7 @@ Your app is ready to be deployed!
 
 **For the best production performance:** Add a build bundler plugin like "@snowpack/plugin-webpack" to your `snowpack.config.mjs` config file.
 
-### npm test
+### npm run deploy
 
-Launches the application test runner.
-Run with the `--watch` flag (`npm test -- --watch`) to run in interactive watch mode.
+Builds and deploys to https://dclark27.github.io/chex/ 
+
