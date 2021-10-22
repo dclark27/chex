@@ -19,7 +19,4 @@ Your app is ready to be deployed!
 
 **For the best production performance:** Add a build bundler plugin like "@snowpack/plugin-webpack" to your `snowpack.config.mjs` config file.
 
-### npm run deploy
-
-Builds and deploys to https://dclark27.github.io/chexs/ 
 
