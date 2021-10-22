@@ -30177,7 +30177,7 @@ var People = () => {
     onClick: () => push({name: ""})
   }, "Add Friend 💃"), typeof errors.people === "string" ? /* @__PURE__ */ createElement(Typography_default, {
     variant: "body2",
-    sx: {m: 4, color: "red"}
+    sx: {m: 4, color: "error.main"}
   }, errors.people) : null));
 };
 var People_default = People;
@@ -30963,7 +30963,7 @@ function App() {
   };
   return /* @__PURE__ */ react.createElement(Container_default, {
     maxWidth: "sm",
-    sx: {display: "flex", alignItems: "flex-start", justifyContent: "center", flexWrap: "wrap"}
+    sx: {display: "flex", alignItems: "flex-start", justifyContent: "center", flexWrap: "wrap", textAlign: "center"}
   }, /* @__PURE__ */ react.createElement(Typography_default, {
     variant: "h3",
     sx: {width: "100%", m: 12}
