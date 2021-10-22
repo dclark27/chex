@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "snowpack dev",
-		"deploy": "npm run build && gh-pages -d docs",
+		"deploy": "gh-pages -d docs",
     "build": "snowpack build",
     "test": "web-test-runner \"src/**/*.test.jsx\"",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",

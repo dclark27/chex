@@ -21,5 +21,5 @@ Your app is ready to be deployed!
 
 ### npm run deploy
 
-Builds and deploys to https://dclark27.github.io/chex/ 
+Builds and deploys to https://dclark27.github.io/chexs/ 
 
