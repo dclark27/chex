@@ -37,7 +37,7 @@ const Receipts = ({ tallies }) => {
       </Paper>
       {Object.keys(tallies.splits).map((name) => (
         <Paper sx={{ width: 200, p: 2}} key={name}>
-          <Typography variant='h6'>{name}’s Receipt</Typography>
+          <Typography variant='h6'>{name}</Typography>
           {tallies.splits[name].ledger.map((plate, index) => (
             <Stack key={index} spacing={2} direction='row' justifyContent='space-between' sx={{ pb: 1}}>
               <Typography variant='caption'>{plate.name}</Typography>
