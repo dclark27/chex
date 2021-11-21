@@ -30882,7 +30882,7 @@ var Receipts = ({tallies}) => {
     key: name
   }, /* @__PURE__ */ react.createElement(Typography_default, {
     variant: "h6"
-  }, name, "’s Receipt"), tallies.splits[name].ledger.map((plate, index) => /* @__PURE__ */ react.createElement(Stack_default, {
+  }, name), tallies.splits[name].ledger.map((plate, index) => /* @__PURE__ */ react.createElement(Stack_default, {
     key: index,
     spacing: 2,
     direction: "row",
