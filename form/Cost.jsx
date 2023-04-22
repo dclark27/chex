@@ -16,7 +16,7 @@ const Cost = () => {
         spacing={2}
       >
         <Field
-          name="price"
+          name="prices"
           placeholder="Price"
           type="number"
           label="Receipt Total"
