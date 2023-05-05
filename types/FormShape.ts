@@ -1,16 +1,16 @@
 export interface FormShape {
-  people: People[];
-  plates: Plate[];
-  price: string;
-  tip: string;
+	people: People[];
+	plates: Plate[];
+	price: string;
+	tip: string;
 }
 
 export interface People {
-  name: string;
+	name: string;
 }
 
 export interface Plate {
-  name: string;
-  price: string;
-  eatenBy: any[];
+	name: string;
+	price: string;
+	eatenBy: any[];
 }
