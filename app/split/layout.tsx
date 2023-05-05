@@ -3,5 +3,5 @@ export default function SplitLayout({
 }: {
 	children: React.ReactNode;
 }) {
-	return <main className='flex gap-5 flex-col items-center'>{children}</main>;
+	return <main className='flex gap-5 flex-col pl-4 pr-4'>{children}</main>;
 }

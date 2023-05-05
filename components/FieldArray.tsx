@@ -1,4 +1,5 @@
 'use client';
+import { Plus, Trash } from 'lucide-react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -26,20 +27,34 @@ export function FieldArray(props: Props) {
 			<h2 className='scroll-m-20 text-xl font-semibold tracking-tight'>
 				{label}
 			</h2>
-			{fields.map((field, index) => (
-				<div className='flex gap-5' key={index}>
-					<Input
-						type='text'
-						placeholder={label}
-						key={field.id}
-						{...register(`${name}.${index}.value`)}
-					/>
-					<Button variant='outline' onClick={() => remove(index)}>
-						Remove
-					</Button>
-				</div>
-			))}
-			<Button onClick={() => append({ value: '' })}>Add</Button>
+			<div className='flex w-full gap-5 flex-col'>
+				{fields.map((field, index) => (
+					<div className='flex w-full gap-5' key={index}>
+						<Input
+							type='text'
+							placeholder={label}
+							key={field.id}
+							{...register(`${name}.${index}.value`)}
+						/>
+						<Button
+							variant='default'
+							className='flex gap-2'
+							onClick={() => remove(index)}
+						>
+							<Trash size={16} />
+							Remove
+						</Button>
+					</div>
+				))}
+				<Button
+					variant='outline'
+					className='flex gap-2'
+					onClick={() => append({ value: '' })}
+				>
+					<Plus size={16} />
+					{'Add'}
+				</Button>
+			</div>
 		</>
 	);
 }
