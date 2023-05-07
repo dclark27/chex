@@ -1,5 +1,5 @@
+import NavBar from '@/components/NavBar';
 import { ClerkProvider } from '@clerk/nextjs';
-import NavBar from '../components/NavBar';
 import './globals.css';
 
 export const metadata = {
