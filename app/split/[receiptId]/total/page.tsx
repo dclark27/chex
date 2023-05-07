@@ -1,11 +1,14 @@
 import { FieldArray } from '@/components/FieldArray';
 import FooterNav from '@/components/FooterNav';
 
-export default async function Page() {
+export default async function Page({ params }) {
 	return (
 		<>
 			<FieldArray name='assignments' label='Assignments' />
-			<FooterNav next='/split/checks' back='/split/items' />
+			<FooterNav
+				next={`/split/${params.id}/checks`}
+				back={`/split/${params.id}/items`}
+			/>
 		</>
 	);
 }

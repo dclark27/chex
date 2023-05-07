@@ -19,12 +19,12 @@ model User {
 
 model Receipt {
   id            Int           @id @default(autoincrement())
-  total         Int
-  tax           Int
-  tip           Int
-  subtotal      Int
+  total         Int?
+  tax           Int?
+  tip           Int?
+  subtotal      Int?
   date          DateTime
-  paymentMethod String
+  paymentMethod String?
   notes         String?
   userId        Int?
   diner         Diner[]
