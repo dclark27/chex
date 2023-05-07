@@ -1,14 +1,25 @@
 import { FieldArray } from '@/components/FieldArray';
-import FooterNav from '@/components/FooterNav';
+import { buttonVariants } from '@/components/ui/button';
+import Link from 'next/link';
 
-export default async function Page({ params }) {
+export default function Page({ params }: { params: { receiptId: string } }) {
 	return (
 		<>
 			<FieldArray name='assignments' label='Assignments' />
-			<FooterNav
-				next={`/split/${params.id}/checks`}
-				back={`/split/${params.id}/items`}
-			/>
+			<div className='flex justify-between w-full'>
+				<Link
+					className={buttonVariants({ variant: 'outline' })}
+					href={`/split/${encodeURIComponent(params.receiptId)}/checks`}
+				>
+					Back
+				</Link>
+				<Link
+					className={buttonVariants({ variant: 'outline' })}
+					href={`/split/${encodeURIComponent(params.receiptId)}/items`}
+				>
+					Next
+				</Link>
+			</div>
 		</>
 	);
 }
