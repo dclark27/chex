@@ -1,0 +1,48 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["jsonProtocol"]
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("POSTGRES_PRISMA_URL")
+  directUrl         = env("POSTGRES_URL_NON_POOLING")
+  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model User {
+  id       Int       @id @default(autoincrement())
+  clerkId  String    @unique
+  nickname String
+  receipts Receipt[]
+}
+
+model Receipt {
+  id            Int           @id @default(autoincrement())
+  total         Int
+  tax           Int
+  tip           Int
+  subtotal      Int
+  date          DateTime
+  paymentMethod String
+  notes         String?
+  userId        Int?
+  diner         Diner[]
+  User          User?         @relation(fields: [userId], references: [id])
+  receiptItems  ReceiptItem[]
+}
+
+model Diner {
+  id        Int      @id @default(autoincrement())
+  name      String
+  receiptId Int?
+  Receipt   Receipt? @relation(fields: [receiptId], references: [id])
+}
+
+model ReceiptItem {
+  id        Int      @id @default(autoincrement())
+  price     Int
+  name      String
+  receiptId Int?
+  Receipt   Receipt? @relation(fields: [receiptId], references: [id])
+}
