@@ -1,4 +1,5 @@
-import NavBar from '../components/NavBar';
+import NavBar from '@/components/NavBar';
+import { ClerkProvider } from '@clerk/nextjs';
 import './globals.css';
 
 export const metadata = {
@@ -12,11 +13,13 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang='en'>
-			<body className='max-w-sm mr-auto ml-auto mt-10'>
-				<NavBar />
-				{children}
-			</body>
-		</html>
+		<ClerkProvider>
+			<html lang='en'>
+				<body className='max-w-sm mr-auto ml-auto mt-10'>
+					<NavBar />
+					{children}
+				</body>
+			</html>
+		</ClerkProvider>
 	);
 }

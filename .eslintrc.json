@@ -1,6 +1,3 @@
 {
-	"extends": "next/core-web-vitals",
-	"rules": {
-		"unused-imports/no-unused-imports-ts": "on"
-	}
+	"extends": "next/core-web-vitals"
 }
