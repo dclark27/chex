@@ -17,7 +17,7 @@ export default function RootLayout({
 			<html lang='en'>
 				<body className='max-w-sm mr-auto ml-auto mt-10'>
 					<NavBar />
-					{children}
+					<main>{children}</main>
 				</body>
 			</html>
 		</ClerkProvider>

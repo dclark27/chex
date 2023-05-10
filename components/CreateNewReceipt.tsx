@@ -1,8 +1,7 @@
 'use client';
-
 import { Receipt } from '@prisma/client';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useTransition } from 'react';
 import { Button } from './ui/button';
 
 interface CreateNewReceiptProps {
@@ -11,18 +10,18 @@ interface CreateNewReceiptProps {
 
 const CreateNewReceipt = (props: CreateNewReceiptProps) => {
 	const router = useRouter();
+	const [isPending, startTransition] = useTransition();
 	const { createReceipt } = props;
 
-	const [loading, setLoading] = useState(false);
-
 	const handleCreateReceipt = async () => {
-		setLoading(true);
-		const receipt = await createReceipt();
-		router.push(`/split/${receipt.id}/people`);
+		startTransition(async () => {
+			const receipt = await createReceipt();
+			router.push(`/split/${receipt.id}/people`);
+		});
 	};
 
 	return (
-		<Button type='submit' disabled={loading} onClick={handleCreateReceipt}>
+		<Button disabled={isPending} onClick={handleCreateReceipt}>
 			Create New Receipt
 		</Button>
 	);
