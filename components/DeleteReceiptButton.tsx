@@ -4,12 +4,12 @@ import { Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from './ui/button';
 
-interface CreateNewReceiptProps {
+interface DeleteReceiptProps {
 	id: number;
 	deleteReceipt(req: { id: number }): void;
 }
 
-const DeleteReceiptButton = (props: CreateNewReceiptProps) => {
+const DeleteReceiptButton = (props: DeleteReceiptProps) => {
 	const { deleteReceipt, id } = props;
 
 	const [loading, setLoading] = useState(false);
