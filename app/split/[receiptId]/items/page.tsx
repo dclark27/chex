@@ -60,7 +60,7 @@ export default async function Page({
 		<FieldArray
 			name='item'
 			label='Items'
-			nextRoute='checks'
+			nextRoute='prices'
 			prevRoute='/items'
 			receiptId={receiptId}
 			save={createDiners}
