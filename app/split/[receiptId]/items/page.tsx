@@ -1,25 +1,71 @@
-import { FieldArray } from '@/components/FieldArray';
-import { buttonVariants } from '@/components/ui/button';
-import Link from 'next/link';
+import { FieldArray, FormShape } from '@/components/FieldArray';
+import { Diner } from '@prisma/client';
+import {
+	DELETE,
+	GET as getItems,
+	POST as saveItems,
+} from '../../../api/items/route';
 
-export default function Page({ params }: { params: { receiptId: string } }) {
+async function getDinersForReceipt(req: {
+	receiptId: number;
+}): Promise<Diner[]> {
+	try {
+		const response = await getItems(req);
+		const json = await response.json();
+
+		return json;
+	} catch (error) {
+		return [];
+	}
+}
+
+export default async function Page({
+	params,
+}: {
+	params: { receiptId: string };
+}) {
+	const receiptId = params.receiptId;
+
+	const diners = await getDinersForReceipt({
+		receiptId: parseInt(receiptId, 10),
+	});
+
+	async function createDiners(data: FormShape) {
+		'use server';
+		await saveItems({
+			receiptId: parseInt(receiptId, 10),
+			receiptItems: data['item'].map((diner) => ({
+				name: diner.value,
+				id: diner.locator,
+			})),
+		});
+	}
+
+	async function deleteDiner(data: { id: number }) {
+		'use server';
+		await DELETE({
+			receiptId: parseInt(receiptId, 10),
+			receiptItemId: data.id,
+		});
+	}
+
+	const defaultValues: FormShape = {
+		['item']: diners.map((diner) => ({
+			value: diner.name,
+			locator: diner.id,
+		})),
+	};
+
 	return (
-		<>
-			<FieldArray name='items' label='Items' />
-			<div className='flex justify-between w-full'>
-				<Link
-					className={buttonVariants({ variant: 'outline' })}
-					href={`/split/${encodeURIComponent(params.receiptId)}/total`}
-				>
-					Back
-				</Link>
-				<Link
-					className={buttonVariants({ variant: 'outline' })}
-					href={`/split/${encodeURIComponent(params.receiptId)}/people`}
-				>
-					Next
-				</Link>
-			</div>
-		</>
+		<FieldArray
+			name='item'
+			label='Items'
+			nextRoute='checks'
+			prevRoute='/items'
+			receiptId={receiptId}
+			save={createDiners}
+			deleteItem={deleteDiner}
+			defaultValues={defaultValues}
+		/>
 	);
 }
