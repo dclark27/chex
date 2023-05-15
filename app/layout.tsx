@@ -15,9 +15,11 @@ export default function RootLayout({
 	return (
 		<ClerkProvider>
 			<html lang='en'>
-				<body className='max-w-sm mr-auto ml-auto mt-10'>
-					<NavBar />
-					<main>{children}</main>
+				<body className='min-h-screen bg-background font-sans antialiased'>
+					<header className='container'>
+						<NavBar />
+					</header>
+					<main className='container'>{children}</main>
 				</body>
 			</html>
 		</ClerkProvider>

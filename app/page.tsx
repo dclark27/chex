@@ -46,10 +46,10 @@ export default async function Page() {
 
 	return (
 		<>
-			<h3 className='scroll-m-20 text-2xl font-semibold tracking-tight'>
+			<h3 className='scroll-m-20 text-2xl font-semibold tracking-tight mb-5'>
 				Receipts
 			</h3>
-			<div className='rounded-md border flex flex-col'>
+			<div className='rounded-md border flex flex-col justify-center'>
 				<Table>
 					<TableHeader>
 						<TableRow>
