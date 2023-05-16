@@ -28,18 +28,23 @@ async function getReceiptsForUser(): Promise<Receipt[]> {
 }
 
 export default async function Page() {
-	async function createReceiptAction() {
-		'use server';
-		const receiptResponse = await createReceipt();
-		const receipt: Receipt = await receiptResponse.json();
-		revalidatePath('/');
-		return receipt;
-	}
-
 	async function deleteReceiptAction(req: { id: number }) {
 		'use server';
 		await deleteReceipt(req);
 		revalidatePath('/');
+	}
+
+	async function createReceiptAction(req: {
+		tax: number;
+		tip: number;
+		subtotal: number;
+		total: number;
+	}) {
+		'use server';
+		const response = await createReceipt(req);
+		const receipt: Receipt = await response.json();
+		revalidatePath('/');
+		return receipt;
 	}
 
 	const receipts = await getReceiptsForUser();
@@ -70,6 +75,8 @@ export default async function Page() {
 						/>
 					</TableBody>
 				</Table>
+			</div>
+			<div className='flex flex-row justify-end mt-5'>
 				<CreateNewReceipt createReceipt={createReceiptAction} />
 			</div>
 		</>

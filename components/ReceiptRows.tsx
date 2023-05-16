@@ -2,6 +2,7 @@
 import { buttonVariants } from '@/components/ui/button';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Receipt } from '@prisma/client';
+import currency from 'currency.js';
 import { Pencil } from 'lucide-react';
 import Link from 'next/link';
 import { experimental_useOptimistic } from 'react';
@@ -41,8 +42,8 @@ const ReceiptRows = (props: Props) => {
 					<TableCell>
 						{new Date(receipt.date.toString()).toLocaleDateString()}
 					</TableCell>
-					<TableCell>{receipt.total || '$0.00'}</TableCell>
-					<TableCell>
+					<TableCell>{currency(receipt.total || 0).format()}</TableCell>
+					<TableCell align='right'>
 						<Link
 							href={`/split/${receipt.id}/people`}
 							className={buttonVariants({ variant: 'ghost' })}

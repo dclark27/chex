@@ -25,7 +25,12 @@ export async function GET() {
 	return new NextResponse(JSON.stringify(receipts));
 }
 
-export async function POST() {
+export async function POST(request: {
+	tax: number;
+	tip: number;
+	subtotal: number;
+	total: number;
+}) {
 	const { userId } = auth();
 
 	if (!userId || typeof userId !== 'string') {
@@ -42,6 +47,10 @@ export async function POST() {
 		data: {
 			userId: user.id,
 			date: new Date(),
+			tax: request.tax,
+			tip: request.tip,
+			subtotal: request.subtotal,
+			total: request.total,
 		},
 	});
 	return new NextResponse(JSON.stringify(receipt));

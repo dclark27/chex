@@ -13,12 +13,18 @@ import { Label } from '@/components/ui/label';
 import { Receipt } from '@prisma/client';
 import currency from 'currency.js';
 import { useRouter } from 'next/navigation';
+import { useTransition } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Button } from './ui/button';
 import { CurrencyInput } from './ui/currency-input';
 
 interface CreateNewReceiptProps {
-	createReceipt(): Promise<Receipt>;
+	createReceipt(request: {
+		tax: number;
+		tip: number;
+		subtotal: number;
+		total: number;
+	}): Promise<Receipt>;
 }
 
 interface FormShape {
@@ -31,7 +37,7 @@ interface FormShape {
 const CreateNewReceipt = (props: CreateNewReceiptProps) => {
 	const router = useRouter();
 	const { createReceipt } = props;
-
+	const [isPending, startTransition] = useTransition();
 	const { handleSubmit, register, watch, control } = useForm<FormShape>({
 		defaultValues: {
 			subtotal: '0.00',
@@ -47,8 +53,15 @@ const CreateNewReceipt = (props: CreateNewReceiptProps) => {
 	const total = currency(subtotal).add(tax).add(tip);
 
 	const handleCreateReceipt: SubmitHandler<FormShape> = async (data) => {
-		const receipt = await createReceipt();
-		router.push(`/split/${receipt.id}/people`);
+		startTransition(async () => {
+			const receipt = await createReceipt({
+				subtotal: parseFloat(data.subtotal),
+				tax: parseFloat(data.tax),
+				tip: parseFloat(data.tip),
+				total: parseFloat(total.toString()),
+			});
+			router.push(`/split/${receipt.id}/people`);
+		});
 	};
 
 	return (
@@ -77,6 +90,7 @@ const CreateNewReceipt = (props: CreateNewReceiptProps) => {
 							render={({ field }) => (
 								<CurrencyInput
 									required
+									disabled={isPending}
 									min={1}
 									step='any'
 									className='col-span-3'
@@ -93,7 +107,11 @@ const CreateNewReceipt = (props: CreateNewReceiptProps) => {
 							name='tax'
 							control={control}
 							render={({ field }) => (
-								<CurrencyInput className='col-span-3' {...field} />
+								<CurrencyInput
+									className='col-span-3'
+									disabled={isPending}
+									{...field}
+								/>
 							)}
 						/>
 					</div>
@@ -105,7 +123,11 @@ const CreateNewReceipt = (props: CreateNewReceiptProps) => {
 							name='tip'
 							control={control}
 							render={({ field }) => (
-								<CurrencyInput className='col-span-3' {...field} />
+								<CurrencyInput
+									className='col-span-3'
+									disabled={isPending}
+									{...field}
+								/>
 							)}
 						/>
 					</div>
@@ -113,7 +135,11 @@ const CreateNewReceipt = (props: CreateNewReceiptProps) => {
 						<Label htmlFor='notes' className='text-right'>
 							Notes
 						</Label>
-						<Input className='col-span-3' {...register('notes')} />
+						<Input
+							className='col-span-3'
+							disabled={isPending}
+							{...register('notes')}
+						/>
 					</div>
 					<div className='grid grid-cols-4 items-center gap-4'>
 						<Label htmlFor='name' className='text-right'>
@@ -127,7 +153,9 @@ const CreateNewReceipt = (props: CreateNewReceiptProps) => {
 						/>
 					</div>
 					<DialogFooter>
-						<Button type='submit'>Create</Button>
+						<Button type='submit' disabled={isPending}>
+							Create
+						</Button>
 					</DialogFooter>
 				</form>
 			</DialogContent>
