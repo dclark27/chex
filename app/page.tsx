@@ -1,4 +1,4 @@
-import CreateNewReceipt from '@/components/CreateNewReceipt';
+import CreateNewReceipt from '@/components/create-new-receipt-dialog';
 import {
 	Table,
 	TableBody,
@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/table';
 import { Receipt } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
-import ReceiptRows from '../components/ReceiptRows';
+import ReceiptRows from '../components/receipt-rows';
 import {
 	POST as createReceipt,
 	DELETE as deleteReceipt,
