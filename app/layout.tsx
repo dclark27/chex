@@ -1,10 +1,56 @@
-import NavBar from '@/components/NavBar';
+import NavBar from '@/components/nav-bar';
+import { TailwindIndicator } from '@/components/tailwind-indicator';
+import { ThemeProvider } from '@/components/theme-provider';
+import { siteConfig } from '@/config/site';
 import { ClerkProvider } from '@clerk/nextjs';
+import { ModeToggle } from '../components/mode-toggle';
 import './globals.css';
 
 export const metadata = {
-	title: 'Chex',
+	title: {
+		default: siteConfig.name,
+		template: `%s | ${siteConfig.name}`,
+	},
 	description: 'Split checks with friends',
+	keywords: [
+		'Next.js',
+		'React',
+		'Tailwind CSS',
+		'Server Components',
+		'Radix UI',
+	],
+	authors: [
+		{
+			name: 'devin clark',
+			url: siteConfig.links.twitter,
+		},
+	],
+	creator: 'devin clark',
+	themeColor: [
+		{ media: '(prefers-color-scheme: light)', color: 'white' },
+		{ media: '(prefers-color-scheme: dark)', color: 'black' },
+	],
+	openGraph: {
+		type: 'website',
+		locale: 'en_US',
+		url: siteConfig.url,
+		title: siteConfig.name,
+		description: siteConfig.description,
+		siteName: siteConfig.name,
+	},
+	twitter: {
+		card: 'summary_large_image',
+		title: siteConfig.name,
+		description: siteConfig.description,
+		images: [`${siteConfig.url}/og.png`],
+		creator: '@devin_clark',
+	},
+	icons: {
+		icon: '/favicon.ico',
+		shortcut: '/favicon-16x16.png',
+		apple: '/apple-touch-icon.png',
+	},
+	manifest: `${siteConfig.url}/site.webmanifest`,
 };
 
 export default function RootLayout({
@@ -14,12 +60,17 @@ export default function RootLayout({
 }) {
 	return (
 		<ClerkProvider>
-			<html lang='en'>
+			<html lang='en' suppressHydrationWarning>
+				<head />
 				<body className='min-h-screen bg-background font-sans antialiased'>
-					<header className='container'>
+					<ThemeProvider attribute='class' defaultTheme='system' enableSystem>
 						<NavBar />
-					</header>
-					<main className='container'>{children}</main>
+						<main className='container'>{children}</main>
+						<TailwindIndicator />
+						<div className='group fixed bottom-0 right-0 p-2  flex items-end justify-end w-24 h-24'>
+							<ModeToggle />
+						</div>
+					</ThemeProvider>
 				</body>
 			</html>
 		</ClerkProvider>

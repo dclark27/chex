@@ -1,4 +1,4 @@
-import { FieldArray, FormShape } from '@/components/FieldArray';
+import { FieldArray, FormShape } from '@/components/field-array';
 import { Diner } from '@prisma/client';
 import {
 	DELETE,
