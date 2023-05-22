@@ -1,9 +1,8 @@
-import NavBar from '@/components/nav-bar';
+import { ModeToggle } from '@/components/mode-toggle';
 import { TailwindIndicator } from '@/components/tailwind-indicator';
 import { ThemeProvider } from '@/components/theme-provider';
 import { siteConfig } from '@/config/site';
 import { ClerkProvider } from '@clerk/nextjs';
-import { ModeToggle } from '../components/mode-toggle';
 import './globals.css';
 
 export const metadata = {
@@ -64,7 +63,6 @@ export default function RootLayout({
 				<head />
 				<body className='min-h-screen bg-background font-sans antialiased'>
 					<ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-						<NavBar />
 						<main className='container'>{children}</main>
 						<TailwindIndicator />
 						<div className='group fixed bottom-0 right-0 p-2  flex items-end justify-end w-24 h-24'>

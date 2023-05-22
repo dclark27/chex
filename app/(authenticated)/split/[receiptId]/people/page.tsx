@@ -4,7 +4,7 @@ import {
 	DELETE,
 	GET as getDiners,
 	POST as saveDiners,
-} from '../../../api/diner/route';
+} from '../../../../api/diner/route';
 
 async function getDinersForReceipt(req: {
 	receiptId: number;

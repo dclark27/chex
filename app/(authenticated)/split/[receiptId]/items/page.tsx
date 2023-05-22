@@ -4,7 +4,7 @@ import {
 	DELETE,
 	GET as getItems,
 	POST as saveItems,
-} from '../../../api/items/route';
+} from '../../../../api/items/route';
 
 async function getDinersForReceipt(req: {
 	receiptId: number;

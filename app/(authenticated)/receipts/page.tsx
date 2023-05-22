@@ -1,4 +1,5 @@
 import CreateNewReceipt from '@/components/create-new-receipt-dialog';
+import ReceiptRows from '@/components/receipt-rows';
 import {
 	Table,
 	TableBody,
@@ -9,12 +10,11 @@ import {
 } from '@/components/ui/table';
 import { Receipt } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
-import ReceiptRows from '../components/receipt-rows';
 import {
 	POST as createReceipt,
 	DELETE as deleteReceipt,
 	GET as getReceipts,
-} from './api/receipts/route';
+} from '../../api/receipts/route';
 
 async function getReceiptsForUser(): Promise<Receipt[]> {
 	try {
