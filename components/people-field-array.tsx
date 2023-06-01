@@ -7,8 +7,6 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 
 interface Props {
-	name: string;
-	label: string;
 	receiptId: string;
 	nextRoute: string;
 	prevRoute: string;
@@ -18,20 +16,19 @@ interface Props {
 }
 
 export type FormShape = {
-	[key: string]: { value: string; locator?: number }[];
+	name: { value: string; locator?: number }[];
 };
 
-export function FieldArray(props: Props) {
+export function PeopleFieldArray(props: Props) {
 	const router = useRouter();
-	const { name, label, receiptId, save, deleteItem, nextRoute, defaultValues } =
-		props;
+	const { receiptId, save, deleteItem, nextRoute, defaultValues } = props;
 	const [isPending, startTransition] = useTransition();
 	const { control, register, handleSubmit } = useForm<FormShape>({
 		defaultValues,
 	});
 	const { fields, append, remove } = useFieldArray({
 		control, // control props comes from useForm (optional: if you are using FormContext)
-		name, // unique name for your Field Array
+		name: 'name', // unique name for your Field Array
 	});
 
 	const onSubmit: SubmitHandler<FormShape> = async (data) => {
@@ -52,18 +49,15 @@ export function FieldArray(props: Props) {
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-5'>
-			<h2 className='scroll-m-20 text-xl font-semibold tracking-tight'>
-				{label}
-			</h2>
+			<h2 className='scroll-m-20 text-xl font-semibold tracking-tight'>Name</h2>
 			<div className='flex w-full gap-5 flex-col'>
 				{fields.map((field, index) => (
-					<div className='flex w-full gap-5' key={index}>
+					<div className='flex w-full gap-5' key={field.id}>
 						<Input
 							type='text'
 							disabled={isPending}
-							placeholder={label}
-							key={field.id}
-							{...register(`${name}.${index}.value`)}
+							placeholder='People'
+							{...register(`name.${index}.value`)}
 						/>
 						<Button
 							variant='default'
@@ -85,7 +79,7 @@ export function FieldArray(props: Props) {
 					onClick={() => append({ value: '' })}
 				>
 					<Plus size={16} />
-					{'Add'}
+					Add
 				</Button>
 			</div>
 			<div className='flex justify-between w-full'>

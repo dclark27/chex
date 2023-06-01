@@ -29,6 +29,7 @@ const ReceiptRows = (props: Props) => {
 					<TableCell>{currency(receipt.total || 0).format()}</TableCell>
 					<TableCell align='right'>
 						<Link
+							aria-label='Edit Receipt'
 							href={`/split/${receipt.id}/people`}
 							className={buttonVariants({ variant: 'ghost' })}
 						>

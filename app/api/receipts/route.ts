@@ -29,6 +29,7 @@ export async function POST(request: {
 	tax: number;
 	tip: number;
 	subtotal: number;
+	notes: string;
 	total: number;
 }) {
 	const { userId } = auth();

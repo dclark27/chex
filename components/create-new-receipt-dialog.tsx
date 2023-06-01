@@ -23,6 +23,7 @@ interface CreateNewReceiptProps {
 		tax: number;
 		tip: number;
 		subtotal: number;
+		notes: string;
 		total: number;
 	}): Promise<Receipt>;
 }
@@ -55,9 +56,10 @@ const CreateNewReceipt = (props: CreateNewReceiptProps) => {
 	const handleCreateReceipt: SubmitHandler<FormShape> = async (data) => {
 		startTransition(async () => {
 			const receipt = await createReceipt({
-				subtotal: parseFloat(data.subtotal),
-				tax: parseFloat(data.tax),
-				tip: parseFloat(data.tip),
+				subtotal: parseFloat(data.subtotal.replace(/[^0-9]/, '')),
+				tax: parseFloat(data.tax.replace(/[^0-9]/, '')),
+				tip: parseFloat(data.tip.replace(/[^0-9]/, '')),
+				notes: data.notes,
 				total: parseFloat(total.toString()),
 			});
 			router.push(`/split/${receipt.id}/people`);

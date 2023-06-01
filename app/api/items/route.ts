@@ -11,15 +11,16 @@ export async function GET(request: { receiptId: number }) {
 		where: {
 			clerkId: userId,
 		},
+		include: {
+			receipts: true,
+		},
 	});
 	if (!user) {
 		return new NextResponse(null, { status: 401 });
 	}
-	const receipt = await db.receipt.findUnique({
-		where: {
-			id: request.receiptId,
-		},
-	});
+	const receipt = user.receipts.find(
+		(receipt) => receipt.id === request.receiptId,
+	);
 	if (!receipt) {
 		return new NextResponse(null, { status: 404 });
 	}
@@ -86,7 +87,7 @@ export async function DELETE(request: {
 
 export async function POST(request: {
 	receiptId: number;
-	receiptItems: { name: string; id?: number }[];
+	receiptItems: { name: string; price: number; id?: number }[];
 }) {
 	const { userId } = auth();
 	if (!userId || typeof userId !== 'string') {
@@ -119,14 +120,14 @@ export async function POST(request: {
 			},
 			create: {
 				name: receiptItem.name,
+				price: receiptItem.price,
 				receiptId: request.receiptId,
-				price: 0,
 			},
 			update: {
 				name: receiptItem.name,
+				price: receiptItem.price,
 				id: receiptItem.id,
 				receiptId: request.receiptId,
-				price: 0,
 			},
 		});
 	});

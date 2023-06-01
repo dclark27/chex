@@ -31,19 +31,20 @@ export default async function Page() {
 	async function deleteReceiptAction(req: { id: number }) {
 		'use server';
 		await deleteReceipt(req);
-		revalidatePath('/');
+		revalidatePath('/receipts');
 	}
 
 	async function createReceiptAction(req: {
 		tax: number;
 		tip: number;
 		subtotal: number;
+		notes: string;
 		total: number;
 	}) {
 		'use server';
 		const response = await createReceipt(req);
 		const receipt: Receipt = await response.json();
-		revalidatePath('/');
+		revalidatePath('/receipts');
 		return receipt;
 	}
 
