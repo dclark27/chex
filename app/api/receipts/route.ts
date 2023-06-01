@@ -31,6 +31,13 @@ export async function POST(request: {
 	subtotal: number;
 	notes: string;
 	total: number;
+	paymentMethod:
+		| 'Visa'
+		| 'Cash'
+		| 'Mastercard'
+		| 'American Express'
+		| 'Discover'
+		| 'Other';
 }) {
 	const { userId } = auth();
 
@@ -52,6 +59,8 @@ export async function POST(request: {
 			tip: request.tip,
 			subtotal: request.subtotal,
 			total: request.total,
+			notes: request.notes,
+			paymentMethod: request.paymentMethod,
 		},
 	});
 	return new NextResponse(JSON.stringify(receipt));
