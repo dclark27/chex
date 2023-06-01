@@ -24,6 +24,7 @@ const DeleteReceiptButton = (props: DeleteReceiptProps) => {
 			type='submit'
 			disabled={loading}
 			variant='ghost'
+			aria-label='Delete Receipt'
 			onClick={handleDeleteReceipt}
 		>
 			<Trash2 />

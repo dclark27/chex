@@ -19,10 +19,10 @@ model User {
 
 model Receipt {
   id            Int           @id @default(autoincrement())
-  total         Int?
-  tax           Int?
-  tip           Int?
-  subtotal      Int?
+  total         Decimal?
+  tax           Decimal?
+  tip           Decimal?
+  subtotal      Decimal?
   date          DateTime
   paymentMethod String?
   notes         String?
@@ -41,7 +41,7 @@ model Diner {
 
 model ReceiptItem {
   id        Int      @id @default(autoincrement())
-  price     Int
+  price     Decimal
   name      String
   receiptId Int?
   Receipt   Receipt? @relation(fields: [receiptId], references: [id])

@@ -1,14 +1,17 @@
-import { FieldArray, FormShape } from '@/components/field-array';
-import { Diner } from '@prisma/client';
+import {
+	ItemsFieldArray,
+	ItemsFieldArrayFormShape,
+} from '@/components/items-field-array';
+import { ReceiptItem } from '@prisma/client';
 import {
 	DELETE,
 	GET as getItems,
 	POST as saveItems,
 } from '../../../../api/items/route';
 
-async function getDinersForReceipt(req: {
+async function getItemsForReceipt(req: {
 	receiptId: number;
-}): Promise<Diner[]> {
+}): Promise<ReceiptItem[]> {
 	try {
 		const response = await getItems(req);
 		const json = await response.json();
@@ -26,22 +29,24 @@ export default async function Page({
 }) {
 	const receiptId = params.receiptId;
 
-	const diners = await getDinersForReceipt({
+	const items = await getItemsForReceipt({
 		receiptId: parseInt(receiptId, 10),
 	});
 
-	async function createDiners(data: FormShape) {
+	async function createItems(data: ItemsFieldArrayFormShape) {
 		'use server';
-		await saveItems({
+		const request = {
 			receiptId: parseInt(receiptId, 10),
-			receiptItems: data['item'].map((diner) => ({
-				name: diner.value,
-				id: diner.locator,
+			receiptItems: data.items.map((item) => ({
+				name: item.name,
+				price: parseFloat(item.price.replace(/[^0-9]/, '')),
+				id: item.locator,
 			})),
-		});
+		};
+		await saveItems(request);
 	}
 
-	async function deleteDiner(data: { id: number }) {
+	async function deleteItems(data: { id: number }) {
 		'use server';
 		await DELETE({
 			receiptId: parseInt(receiptId, 10),
@@ -49,22 +54,21 @@ export default async function Page({
 		});
 	}
 
-	const defaultValues: FormShape = {
-		['item']: diners.map((diner) => ({
-			value: diner.name,
-			locator: diner.id,
+	const defaultValues: ItemsFieldArrayFormShape = {
+		items: items.map((item) => ({
+			name: item.name,
+			price: item.price.toString(),
+			locator: item.id || undefined,
 		})),
 	};
 
 	return (
-		<FieldArray
-			name='item'
-			label='Items'
-			nextRoute='prices'
+		<ItemsFieldArray
+			nextRoute='assignments'
 			prevRoute='/items'
 			receiptId={receiptId}
-			save={createDiners}
-			deleteItem={deleteDiner}
+			save={createItems}
+			deleteItem={deleteItems}
 			defaultValues={defaultValues}
 		/>
 	);

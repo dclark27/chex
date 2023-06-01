@@ -1,5 +1,6 @@
 import { db } from '@/lib/db';
 import { auth } from '@clerk/nextjs';
+import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: { receiptId: number }) {
@@ -75,7 +76,7 @@ export async function DELETE(request: { receiptId: number; dinerId: number }) {
 			id: request.dinerId,
 		},
 	});
-
+	revalidatePath(`/split/${request.receiptId}/people`);
 	return new NextResponse(null, { status: 204 });
 }
 
@@ -125,6 +126,5 @@ export async function POST(request: {
 	});
 
 	const createdDiners = await Promise.all(newDiners);
-
 	return new NextResponse(JSON.stringify(createdDiners));
 }
