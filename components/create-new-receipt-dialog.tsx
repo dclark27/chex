@@ -12,8 +12,7 @@ import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Receipt } from '@prisma/client';
 import currency from 'currency.js';
-import { useRouter } from 'next/navigation';
-import { useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button } from './ui/button';
 
@@ -69,7 +68,7 @@ const formSchema = z.object({
 });
 
 const CreateNewReceipt = (props: CreateNewReceiptProps) => {
-	const router = useRouter();
+	const [open, setOpen] = useState(false);
 	const { createReceipt } = props;
 	const [isPending, startTransition] = useTransition();
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -95,7 +94,7 @@ const CreateNewReceipt = (props: CreateNewReceiptProps) => {
 		data,
 	) => {
 		startTransition(async () => {
-			const receipt = await createReceipt({
+			await createReceipt({
 				subtotal: parseFloat(data.subtotal.replace(/[^0-9]/, '')),
 				tax: parseFloat(data.tax.replace(/[^0-9]/, '')),
 				tip: parseFloat(data.tip.replace(/[^0-9]/, '')),
@@ -103,14 +102,16 @@ const CreateNewReceipt = (props: CreateNewReceiptProps) => {
 				total: parseFloat(total.toString()),
 				paymentMethod: data.paymentMethod,
 			});
-			router.push(`/split/${receipt.id}/people`);
+			setOpen(false);
 		});
 	};
 
 	return (
-		<Dialog>
+		<Dialog open={open}>
 			<DialogTrigger asChild>
-				<Button variant='default'>Create New Receipt</Button>
+				<Button variant='default' onClick={() => setOpen(true)}>
+					Create New Receipt
+				</Button>
 			</DialogTrigger>
 			<DialogContent className='sm:max-w-[425px]'>
 				<DialogHeader>

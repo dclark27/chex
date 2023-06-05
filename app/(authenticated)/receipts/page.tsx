@@ -1,24 +1,14 @@
 import CreateNewReceipt from '@/components/create-new-receipt-dialog';
+import { db } from '@/lib/db';
+import { auth } from '@clerk/nextjs';
 import { Receipt } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import {
 	POST as createReceipt,
 	DELETE as deleteReceipt,
-	GET as getReceipts,
 } from '../../api/receipts/route';
 import { columns } from './columns';
 import { DataTable } from './data-table';
-
-async function getReceiptsForUser(): Promise<Receipt[]> {
-	try {
-		const response = await getReceipts();
-		const json = await response.json();
-
-		return json;
-	} catch (error) {
-		return [];
-	}
-}
 
 export default async function Page() {
 	async function deleteReceiptAction(req: { id: number }) {
@@ -48,7 +38,23 @@ export default async function Page() {
 		return receipt;
 	}
 
-	const receipts = await getReceiptsForUser();
+	const { userId } = auth();
+
+	if (!userId) throw new Error('User not logged in');
+
+	const user = await db.user.findUnique({
+		where: {
+			clerkId: userId,
+		},
+	});
+
+	if (!user) throw new Error('User not found');
+
+	const receipts = await db.receipt.findMany({
+		where: {
+			userId: user.id,
+		},
+	});
 
 	return (
 		<>
