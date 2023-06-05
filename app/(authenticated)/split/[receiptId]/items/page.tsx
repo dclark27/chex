@@ -1,19 +1,46 @@
-import {
-	ItemsFieldArray,
-	ItemsFieldArrayFormShape,
-} from '@/components/items-field-array';
-import { ReceiptItem } from '@prisma/client';
+import { GET as getDiners } from '@/app/api/diner/route';
 import {
 	DELETE,
 	GET as getItems,
 	POST as saveItems,
-} from '../../../../api/items/route';
+} from '@/app/api/items/route';
+import { GET as getReceipts } from '@/app/api/receipts/route';
+import { FormShape, ItemsFieldArray } from '@/components/items-field-array';
+import { Diner, Prisma, Receipt, ReceiptItem } from '@prisma/client';
 
 async function getItemsForReceipt(req: {
 	receiptId: number;
 }): Promise<ReceiptItem[]> {
 	try {
 		const response = await getItems(req);
+		const json = await response.json();
+
+		return json;
+	} catch (error) {
+		return [];
+	}
+}
+
+async function getReceiptFromId(req: { receiptId: number }): Promise<Receipt> {
+	try {
+		const response = await getReceipts();
+		const json = await response.json();
+
+		const receipt = json.find(
+			(receipt: Receipt) => receipt.id === req.receiptId,
+		);
+
+		return receipt;
+	} catch (error) {
+		throw new Error('Receipt not found');
+	}
+}
+
+async function getDinersForReceipt(req: {
+	receiptId: number;
+}): Promise<Diner[]> {
+	try {
+		const response = await getDiners(req);
 		const json = await response.json();
 
 		return json;
@@ -29,11 +56,22 @@ export default async function Page({
 }) {
 	const receiptId = params.receiptId;
 
-	const items = await getItemsForReceipt({
-		receiptId: parseInt(receiptId, 10),
-	});
+	const requests = await Promise.all([
+		getDinersForReceipt({
+			receiptId: parseInt(receiptId, 10),
+		}),
+		getItemsForReceipt({
+			receiptId: parseInt(receiptId, 10),
+		}),
+		getReceiptFromId({
+			receiptId: parseInt(receiptId, 10),
+		}),
+	]);
+	const receipt = requests[2];
+	const items = requests[1];
+	const diners = requests[0];
 
-	async function createItems(data: ItemsFieldArrayFormShape) {
+	async function createItems(data: FormShape) {
 		'use server';
 		const request = {
 			receiptId: parseInt(receiptId, 10),
@@ -41,6 +79,7 @@ export default async function Page({
 				name: item.name,
 				price: parseFloat(item.price.replace(/[^0-9]/, '')),
 				id: item.locator,
+				dinerIds: item.dinerId,
 			})),
 		};
 		await saveItems(request);
@@ -54,19 +93,38 @@ export default async function Page({
 		});
 	}
 
-	const defaultValues: ItemsFieldArrayFormShape = {
-		items: items.map((item) => ({
-			name: item.name,
-			price: item.price.toString(),
-			locator: item.id || undefined,
-		})),
+	const defaultValues: FormShape = {
+		items:
+			items && items.length > 0
+				? items.map((item) => ({
+						name: item.name,
+						price: new Prisma.Decimal(item.price).toString(),
+						dinerId: item.dinerIds,
+						locator: item.id,
+				  }))
+				: [
+						{
+							name: '',
+							price: '',
+							dinerId: [],
+							locator: undefined,
+						},
+						{
+							name: '',
+							price: '',
+							dinerId: [],
+							locator: undefined,
+						},
+				  ],
 	};
 
 	return (
 		<ItemsFieldArray
-			nextRoute='assignments'
+			nextRoute='/receipts'
 			prevRoute='/items'
+			diners={diners}
 			receiptId={receiptId}
+			subtotal={new Prisma.Decimal(receipt.subtotal || 0).toNumber()}
 			save={createItems}
 			deleteItem={deleteItems}
 			defaultValues={defaultValues}
