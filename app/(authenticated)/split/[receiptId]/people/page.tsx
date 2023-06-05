@@ -1,6 +1,5 @@
 import { FormShape, PeopleFieldArray } from '@/components/people-field-array';
 import { Diner } from '@prisma/client';
-import { revalidateTag } from 'next/cache';
 import {
 	DELETE,
 	GET as getDiners,
@@ -11,7 +10,6 @@ async function getDinersForReceipt(req: {
 	receiptId: number;
 }): Promise<Diner[]> {
 	try {
-		revalidateTag('split/[receiptId]');
 		const response = await getDiners(req);
 		const json = await response.json();
 
@@ -52,7 +50,10 @@ export default async function Page({
 	}
 
 	const defaultValues: FormShape = {
-		name: diners.map((diner) => ({ value: diner.name, locator: diner.id })),
+		name:
+			diners && diners.length > 0
+				? diners.map((diner) => ({ value: diner.name, locator: diner.id }))
+				: [{ value: '' }, { value: '' }],
 	};
 
 	return (

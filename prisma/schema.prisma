@@ -44,5 +44,6 @@ model ReceiptItem {
   price     Decimal
   name      String
   receiptId Int?
+  dinerIds  Int[]    @default([])
   Receipt   Receipt? @relation(fields: [receiptId], references: [id])
 }

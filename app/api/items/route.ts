@@ -87,7 +87,12 @@ export async function DELETE(request: {
 
 export async function POST(request: {
 	receiptId: number;
-	receiptItems: { name: string; price: number; id?: number }[];
+	receiptItems: {
+		name: string;
+		price: number;
+		dinerIds: number[];
+		id?: number;
+	}[];
 }) {
 	const { userId } = auth();
 	if (!userId || typeof userId !== 'string') {
@@ -122,12 +127,14 @@ export async function POST(request: {
 				name: receiptItem.name,
 				price: receiptItem.price,
 				receiptId: request.receiptId,
+				dinerIds: receiptItem.dinerIds,
 			},
 			update: {
 				name: receiptItem.name,
 				price: receiptItem.price,
 				id: receiptItem.id,
 				receiptId: request.receiptId,
+				dinerIds: receiptItem.dinerIds,
 			},
 		});
 	});
