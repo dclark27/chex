@@ -116,7 +116,7 @@ export default async function Page({
 
 	return (
 		<ItemsFieldArray
-			nextRoute='/people'
+			nextRoute='/receipts'
 			prevRoute='/items'
 			diners={diners}
 			receiptId={receiptId}

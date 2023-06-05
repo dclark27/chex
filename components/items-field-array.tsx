@@ -109,7 +109,7 @@ export function ItemsFieldArray(props: Props) {
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
-				className='flex flex-col gap-5 pb-5'
+				className='flex flex-col gap-5 mb-10'
 			>
 				<h2 className='scroll-m-20 text-xl font-semibold tracking-tight'>
 					Items

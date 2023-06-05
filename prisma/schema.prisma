@@ -19,14 +19,14 @@ model User {
 
 model Receipt {
   id            Int           @id @default(autoincrement())
-  total         Decimal?
-  tax           Decimal?
-  tip           Decimal?
-  subtotal      Decimal?
+  total         Decimal
+  tax           Decimal
+  tip           Decimal
+  subtotal      Decimal
   date          DateTime
   paymentMethod String?
   notes         String?
-  userId        Int?
+  userId        Int
   diner         Diner[]
   User          User?         @relation(fields: [userId], references: [id])
   receiptItems  ReceiptItem[]
@@ -35,7 +35,7 @@ model Receipt {
 model Diner {
   id        Int      @id @default(autoincrement())
   name      String
-  receiptId Int?
+  receiptId Int
   Receipt   Receipt? @relation(fields: [receiptId], references: [id])
 }
 
@@ -43,7 +43,7 @@ model ReceiptItem {
   id        Int      @id @default(autoincrement())
   price     Decimal
   name      String
-  receiptId Int?
+  receiptId Int
   dinerIds  Int[]    @default([])
   Receipt   Receipt? @relation(fields: [receiptId], references: [id])
 }
