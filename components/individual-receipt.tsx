@@ -1,7 +1,6 @@
 import { Diner, Prisma, Receipt, ReceiptItem } from '@prisma/client';
 import currency from 'currency.js';
 import { cn } from '../lib/utils';
-import { Button } from './ui/button';
 import { CardContent, CardFooter, CardHeader } from './ui/card';
 
 interface Props {
@@ -69,9 +68,9 @@ export const IndividualReceipt = (props: Props) => {
 				<LineItem name='Total' price={personalTotal} bold />
 			</CardContent>
 			<CardFooter>
-				<Button className='w-full' variant='outline'>
+				{/* <Button className='w-full' variant='outline'>
 					Request
-				</Button>
+				</Button> */}
 			</CardFooter>
 		</>
 	);

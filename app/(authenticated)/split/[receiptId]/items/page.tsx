@@ -4,7 +4,7 @@ import {
 	GET as getItems,
 	POST as saveItems,
 } from '@/app/api/items/route';
-import { GET as getReceipt } from '@/app/api/receipts/[receiptId]/route';
+import { GET as getReceipts } from '@/app/api/receipts/route';
 import { FormShape, ItemsFieldArray } from '@/components/items-field-array';
 import { Diner, Prisma, Receipt, ReceiptItem } from '@prisma/client';
 
@@ -23,10 +23,14 @@ async function getItemsForReceipt(req: {
 
 async function getReceiptFromId(req: { receiptId: number }): Promise<Receipt> {
 	try {
-		const response = await getReceipt(req);
+		const response = await getReceipts();
 		const json = await response.json();
 
-		return json;
+		const receipt = json.find(
+			(receipt: Receipt) => receipt.id === req.receiptId,
+		);
+
+		return receipt;
 	} catch (error) {
 		throw new Error('Receipt not found');
 	}

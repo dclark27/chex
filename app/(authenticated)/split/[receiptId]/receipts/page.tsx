@@ -1,11 +1,11 @@
 import { GET as getDiners } from '@/app/api/diner/route';
 import { GET as getItems } from '@/app/api/items/route';
-import { GET as getReceipt } from '@/app/api/receipts/[receiptId]/route';
+import { GET as getReceipts } from '@/app/api/receipts/route';
+import { IndividualReceipt } from '@/components/individual-receipt';
+import { buttonVariants } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Diner, Receipt, ReceiptItem } from '@prisma/client';
 import Link from 'next/link';
-import { IndividualReceipt } from '../../../../../components/individual-receipt';
-import { buttonVariants } from '../../../../../components/ui/button';
 
 async function getItemsForReceipt(req: {
 	receiptId: number;
@@ -22,10 +22,12 @@ async function getItemsForReceipt(req: {
 
 async function getReceiptFromId(req: { receiptId: number }): Promise<Receipt> {
 	try {
-		const response = await getReceipt(req);
+		const response = await getReceipts();
 		const json = await response.json();
-
-		return json;
+		const receipt = json.find(
+			(receipt: Receipt) => receipt.id === req.receiptId,
+		);
+		return receipt;
 	} catch (error) {
 		throw new Error('Receipt not found');
 	}
@@ -68,14 +70,21 @@ export default async function Page({
 			<h3 className='scroll-m-20 text-2xl font-semibold tracking-tight'>
 				Receipts
 			</h3>
-			{diners.map((diner) => (
-				<Card key={diner.id}>
-					<IndividualReceipt receipt={receipt} diner={diner} items={items} />
-				</Card>
-			))}
-			<Link href='/receipts' className={buttonVariants({ variant: 'default' })}>
-				Start Over
-			</Link>
+			<div className='flex flex-row gap-5'>
+				{diners.map((diner) => (
+					<Card key={diner.id} className='w-96'>
+						<IndividualReceipt receipt={receipt} diner={diner} items={items} />
+					</Card>
+				))}
+			</div>
+			<div className='flex flex-row justify-start'>
+				<Link
+					href='/receipts'
+					className={buttonVariants({ variant: 'default' })}
+				>
+					Start Over
+				</Link>
+			</div>
 		</div>
 	);
 }
