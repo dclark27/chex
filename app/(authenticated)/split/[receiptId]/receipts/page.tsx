@@ -70,9 +70,9 @@ export default async function Page({
 			<h3 className='scroll-m-20 text-2xl font-semibold tracking-tight'>
 				Receipts
 			</h3>
-			<div className='flex flex-row gap-5'>
+			<div className='flex flex-wrap gap-5 justify-middle'>
 				{diners.map((diner) => (
-					<Card key={diner.id} className='w-96'>
+					<Card key={diner.id} className='w-64'>
 						<IndividualReceipt receipt={receipt} diner={diner} items={items} />
 					</Card>
 				))}
