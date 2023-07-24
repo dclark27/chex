@@ -1,115 +1,49 @@
 'use client';
+
+import { useState, useTransition } from 'react';
+import * as z from 'zod';
+
+import '@uploadthing/react/styles.css';
+
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { UploadDropzone } from '@uploadthing/react';
+
+import { Button } from '@/components/ui/button';
 import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
-	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Receipt } from '@prisma/client';
-import currency from 'currency.js';
-import { useState, useTransition } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { Button } from './ui/button';
+import { OurFileRouter } from '@/app/api/uploadthing/core';
+import { processReceipt } from '@/app/dashboard/action';
 
-interface CreateNewReceiptProps {
-	createReceipt(request: {
-		tax: number;
-		tip: number;
-		subtotal: number;
-		notes: string;
-		total: number;
-		paymentMethod:
-			| 'Visa'
-			| 'Cash'
-			| 'Mastercard'
-			| 'American Express'
-			| 'Discover'
-			| 'Other';
-	}): Promise<Receipt>;
-}
-
-import * as z from 'zod';
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from './ui/form';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from './ui/select';
-import { Textarea } from './ui/textarea';
+import { Icons } from './icons';
 
 const formSchema = z.object({
-	tax: z.string(),
-	tip: z.string(),
-	subtotal: z.string(),
-	notes: z.string(),
-	total: z.number().min(0),
-	paymentMethod: z.enum([
-		'Visa',
-		'Cash',
-		'Mastercard',
-		'American Express',
-		'Discover',
-		'Other',
-	]),
+	url: z.string().url(),
 });
 
-const CreateNewReceipt = (props: CreateNewReceiptProps) => {
-	const [open, setOpen] = useState(false);
-	const { createReceipt } = props;
+const CreateNewReceipt = () => {
+	const router = useRouter();
 	const [isPending, startTransition] = useTransition();
-	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(formSchema),
-		defaultValues: {
-			subtotal: '0.00',
-			tax: '0.00',
-			tip: '0.00',
-			notes: '',
-			total: 0,
-			paymentMethod: 'Visa',
-		},
-	});
+	const [open, setOpen] = useState(false);
+	const [url, setUrl] = useState('');
 
-	const { watch } = form;
-
-	const subtotal = watch('subtotal');
-	const tax = watch('tax');
-	const tip = watch('tip');
-	const total = currency(subtotal).add(tax).add(tip);
-
-	const handleCreateReceipt: SubmitHandler<z.infer<typeof formSchema>> = async (
-		data,
-	) => {
+	const handleCreateReceipt = async () => {
 		startTransition(async () => {
-			await createReceipt({
-				subtotal: parseFloat(data.subtotal.replace(/[^0-9]/, '')),
-				tax: parseFloat(data.tax.replace(/[^0-9]/, '')),
-				tip: parseFloat(data.tip.replace(/[^0-9]/, '')),
-				notes: data.notes,
-				total: parseFloat(total.toString()),
-				paymentMethod: data.paymentMethod,
-			});
-			setOpen(false);
+			const receipt = await processReceipt(url);
+			router.push(`/dashboard/${receipt.id}/items`);
 		});
 	};
 
 	return (
-		<Dialog open={open}>
+		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button variant='default' onClick={() => setOpen(true)}>
+				<Button variant='default' size='sm' onClick={() => setOpen(true)}>
 					Create New Receipt
 				</Button>
 			</DialogTrigger>
@@ -117,104 +51,48 @@ const CreateNewReceipt = (props: CreateNewReceiptProps) => {
 				<DialogHeader>
 					<DialogTitle>Create New Receipt</DialogTitle>
 					<DialogDescription>
-						Enter the details of your receipt below to get started.
+						Upload a photo of your receipt to get started, or skip to the next
+						step
 					</DialogDescription>
 				</DialogHeader>
-				<Form {...form}>
-					<form
-						onSubmit={form.handleSubmit(handleCreateReceipt)}
-						className='space-y-2'
-					>
-						<FormField
-							control={form.control}
-							name='subtotal'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Subtotal</FormLabel>
-									<FormControl>
-										<Input disabled={isPending} {...field} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
+				{!url && (
+					<UploadDropzone<OurFileRouter>
+						endpoint='imageUploader'
+						onClientUploadComplete={(res) => {
+							if (res && res.length > 0) {
+								setUrl(res[0].fileUrl);
+							}
+						}}
+						onUploadError={(error: Error) => {
+							setUrl('');
+						}}
+					/>
+				)}
+				{url && (
+					<div className='mb-4 flex w-full justify-center'>
+						<Image
+							src={url}
+							alt='uploaded receipt preview'
+							width={300}
+							height={300}
 						/>
-						<FormField
-							control={form.control}
-							name='tax'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Tax</FormLabel>
-									<FormControl>
-										<Input disabled={isPending} {...field} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
+					</div>
+				)}
+				<div className='flex flex-row justify-between gap-2'>
+					{url && (
+						<Button variant='outline' onClick={() => setUrl('')}>
+							Reset
+						</Button>
+					)}
+					{url && (
+						<Button onClick={() => handleCreateReceipt()} disabled={isPending}>
+							{isPending && (
+								<Icons.spinner className='mr-2 h-4 w-4 animate-spin' />
 							)}
-						/>
-						<FormField
-							control={form.control}
-							name='tip'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Tip</FormLabel>
-									<FormControl>
-										<Input disabled={isPending} {...field} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name='paymentMethod'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Payment Method</FormLabel>
-									<Select
-										disabled={isPending}
-										onValueChange={field.onChange}
-										defaultValue={field.value}
-									>
-										<FormControl>
-											<SelectTrigger>
-												<SelectValue placeholder='Payment Method' />
-											</SelectTrigger>
-										</FormControl>
-										<SelectContent>
-											<SelectItem value='Visa'>Visa</SelectItem>
-											<SelectItem value='Cash'>Cash</SelectItem>
-											<SelectItem value='Mastercard'>Mastercard</SelectItem>
-											<SelectItem value='American Express'>
-												American Express
-											</SelectItem>
-											<SelectItem value='Discover'>Discover</SelectItem>
-											<SelectItem value='Other'>Other</SelectItem>
-										</SelectContent>
-									</Select>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name='notes'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Notes</FormLabel>
-									<FormControl>
-										<Textarea disabled={isPending} {...field} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<DialogFooter>
-							<Button type='submit' disabled={isPending}>
-								Create
-							</Button>
-						</DialogFooter>
-					</form>
-				</Form>
+							Create Receipt
+						</Button>
+					)}
+				</div>
 			</DialogContent>
 		</Dialog>
 	);

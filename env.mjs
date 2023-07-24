@@ -8,43 +8,36 @@ export const env = createEnv({
 	 * Will throw if you access these variables on the client.
 	 */
 	server: {
-		NEXT_PUBLIC_APP_URL: z.string().min(1),
-		CLERK_SECRET_KEY: z.string().min(1),
-		POSTGRES_URL: z.string().min(1),
-		POSTGRES_URL_NON_POOLING: z.string().min(1),
-		POSTGRES_PRISMA_URL: z.string().min(1),
-		POSTGRES_HOST: z.string().min(1),
-		POSTGRES_USER: z.string().min(1),
-		POSTGRES_PASSWORD: z.string().min(1),
-		POSTGRES_DATABASE: z.string().min(1),
+		PROJECT_REF: z.string().min(1),
+		UPLOADTHING_SECRET: z.string().min(1),
+		UPLOADTHING_APP_ID: z.string().min(1),
+		VISION_KEY: z.string().min(1),
+		VISION_ENDPOINT: z.string().min(1),
 	},
 	/*
 	 * Environment variables available on the client (and server).
 	 *
-	 * 💡 You'll get typeerrors if these are not prefixed with NEXT_PUBLIC_.
+	 * 💡 You'll get type errors if these are not prefixed with NEXT_PUBLIC_.
 	 */
 	client: {
-		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1),
-		NEXT_PUBLIC_APP_URL: z.string().url(),
+		NEXT_PUBLIC_APP_URL: z.string().min(1),
+		NEXT_PUBLIC_SUPABASE_URL: z.string().min(1),
+		NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
 	},
 	/*
 	 * Due to how Next.js bundles environment variables on Edge and Client,
 	 * we need to manually destructure them to make sure all are included in bundle.
 	 *
-	 * 💡 You'll get typeerrors if not all variables from `server` & `client` are included here.
+	 * 💡 You'll get type errors if not all variables from `server` & `client` are included here.
 	 */
 	runtimeEnv: {
+		PROJECT_REF: process.env.PROJECT_REF,
 		NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
-		CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
-		POSTGRES_URL: process.env.POSTGRES_URL,
-		POSTGRES_URL_NON_POOLING: process.env.POSTGRES_URL_NON_POOLING,
-		POSTGRES_PRISMA_URL: process.env.POSTGRES_PRISMA_URL,
-		POSTGRES_HOST: process.env.POSTGRES_HOST,
-		POSTGRES_USER: process.env.POSTGRES_USER,
-		POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
-		POSTGRES_DATABASE: process.env.POSTGRES_DATABASE,
-		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
-			process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
-		NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+		NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+		NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+		UPLOADTHING_SECRET: process.env.UPLOADTHING_SECRET,
+		UPLOADTHING_APP_ID: process.env.UPLOADTHING_APP_ID,
+		VISION_KEY: process.env.VISION_KEY,
+		VISION_ENDPOINT: process.env.VISION_ENDPOINT,
 	},
 });

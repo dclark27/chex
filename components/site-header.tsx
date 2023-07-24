@@ -1,6 +1,6 @@
-const NavBar = () => {
+const SiteHeader = () => {
 	return (
-		<header className='z-40 py-6 flex items-center flex-col mb-4 justify-center pb-5 gap-5'>
+		<header className='z-40 mb-4 flex flex-col items-center justify-center gap-5 py-6 pb-5'>
 			<h3 className='scroll-m-20 text-5xl font-extrabold tracking-tight'>
 				Chex
 			</h3>
@@ -11,4 +11,4 @@ const NavBar = () => {
 	);
 };
 
-export default NavBar;
+export default SiteHeader;

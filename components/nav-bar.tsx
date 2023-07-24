@@ -1,14 +1,10 @@
-import { UserButton } from '@clerk/nextjs';
 import Link from 'next/link';
+import { UserCircle } from 'lucide-react';
 
-interface NavBarProps {
-	home?: __next_route_internal_types__.RouteImpl<string>;
-}
-
-const NavBar = (props: NavBarProps) => {
+export default function NavBar() {
 	return (
-		<nav className='z-40 py-6 flex items-center flex-row mb-4 justify-between pb-5'>
-			<Link href={props.home ? props.home : '/'}>
+		<nav className='z-40 mb-4 flex flex-row items-center justify-between py-6 pb-5'>
+			<Link href={'/dashboard'}>
 				<h3 className='scroll-m-20 text-xl font-extrabold tracking-tight'>
 					🥄 Chex
 				</h3>
@@ -16,9 +12,9 @@ const NavBar = (props: NavBarProps) => {
 					Split checks with friends
 				</small>
 			</Link>
-			<UserButton />
+			<Link href='/account'>
+				<UserCircle />
+			</Link>
 		</nav>
 	);
-};
-
-export default NavBar;
+}

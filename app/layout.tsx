@@ -1,9 +1,11 @@
+import { siteConfig } from '@/config/site';
 import { ModeToggle } from '@/components/mode-toggle';
 import { TailwindIndicator } from '@/components/tailwind-indicator';
 import { ThemeProvider } from '@/components/theme-provider';
-import { siteConfig } from '@/config/site';
-import { ClerkProvider } from '@clerk/nextjs';
+
 import './globals.css';
+
+import { Toaster } from '@/components/ui/toaster';
 
 export const metadata = {
 	title: {
@@ -58,19 +60,18 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<ClerkProvider>
-			<html lang='en' suppressHydrationWarning>
-				<head />
-				<body className='min-h-screen bg-background font-sans antialiased'>
-					<ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-						<main className='container'>{children}</main>
-						<TailwindIndicator />
-						<div className='group fixed bottom-0 right-0 p-2  flex items-end justify-end w-24 h-24'>
-							<ModeToggle />
-						</div>
-					</ThemeProvider>
-				</body>
-			</html>
-		</ClerkProvider>
+		<html lang='en' suppressHydrationWarning>
+			<head />
+			<body className='min-h-screen bg-background font-sans antialiased'>
+				<ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+					<main className='container'>{children}</main>
+					<TailwindIndicator />
+					<div className='group fixed bottom-0 right-0 flex  h-24 w-24 items-end justify-end p-2'>
+						<ModeToggle />
+					</div>
+					<Toaster />
+				</ThemeProvider>
+			</body>
+		</html>
 	);
 }
