@@ -1,16 +1,18 @@
 'use client';
 
+import { useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
 	createClientComponentClient,
 	User,
 } from '@supabase/auth-helpers-nextjs';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 import { Database } from '@/types/supabase';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import {
 	Form,
 	FormControl,
@@ -21,12 +23,15 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
+import { Icons } from './icons';
+import { toast } from './ui/use-toast';
+
 const formSchema = z.object({
 	email: z.string().email(),
 	password: z.string().min(8),
 });
 
-export default function SignInOrGetStarted({
+export default function SignUpForm({
 	isSignedIn,
 	user,
 }: {
@@ -35,6 +40,7 @@ export default function SignInOrGetStarted({
 }) {
 	const router = useRouter();
 	const supabase = createClientComponentClient<Database>();
+	const [loading, setLoading] = useState(false);
 
 	// 1. Define your form.
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -45,17 +51,35 @@ export default function SignInOrGetStarted({
 		},
 	});
 
-	// 2. Define a submit handler.
-	async function onSubmit(values: z.infer<typeof formSchema>) {
-		await supabase.auth.signInWithPassword({
-			email: values.email,
-			password: values.password,
-		});
-		router.refresh();
-	}
-
-	const onError = (errors: any) => {
-		console.log(errors);
+	const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = async (
+		values,
+	) => {
+		setLoading(true);
+		try {
+			const { error } = await supabase.auth.signUp({
+				email: values.email,
+				password: values.password,
+			});
+			if (error) {
+				toast({
+					variant: 'destructive',
+					title: 'Error',
+					description:
+						error.message ?? 'There was an error creating your account.',
+				});
+			} else {
+				toast({
+					title: 'Success!',
+					description:
+						'Your account has been created and an email has been sent. Please check your inbox.',
+				});
+				router.push('/login');
+			}
+		} catch (error) {
+			console.error(error);
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	return isSignedIn ? (
@@ -73,16 +97,13 @@ export default function SignInOrGetStarted({
 		</div>
 	) : (
 		<Form {...form}>
-			<form
-				onSubmit={form.handleSubmit(onSubmit, onError)}
-				className='space-y-2'
-			>
+			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-2'>
 				<FormField
 					control={form.control}
 					name='email'
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Username</FormLabel>
+							<FormLabel>Email</FormLabel>
 							<FormControl>
 								<Input placeholder='Email' {...field} />
 							</FormControl>
@@ -105,11 +126,17 @@ export default function SignInOrGetStarted({
 				/>
 
 				<div className='flex flex-col gap-2 pt-8'>
-					<Button type='submit'>Sign In</Button>
-					<span className='text-center'>Or</span>
-					<Button type='submit' variant='outline'>
+					<Button type='submit' disabled={loading}>
+						{loading && <Icons.spinner className='mr-2 h-4 w-4 animate-spin' />}
 						Create Account
 					</Button>
+					<span className='text-center'>Or</span>
+					<Link
+						href='/login'
+						className={buttonVariants({ variant: 'outline' })}
+					>
+						Log In
+					</Link>
 				</div>
 			</form>
 		</Form>
