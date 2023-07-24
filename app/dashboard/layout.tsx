@@ -7,7 +7,7 @@ interface EditorProps {
 export default function AuthenticatedLayout({ children }: EditorProps) {
 	return (
 		<>
-			<NavBar href='/dashboard' />
+			<NavBar />
 			{children}
 		</>
 	);
