@@ -9,7 +9,7 @@ export default function NavBar<T extends string>({
 }) {
 	return (
 		<nav className='z-40 mb-4 flex flex-row items-center justify-between py-6 pb-5'>
-			<Link href={href ? href : '/dashboard'}>
+			<Link href={'/dashboard'}>
 				<h3 className='scroll-m-20 text-xl font-extrabold tracking-tight'>
 					🥄 Chex
 				</h3>
