@@ -1,136 +1,153 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
+import Link from 'next/link';
 import {
 	createClientComponentClient,
 	Session,
 } from '@supabase/auth-helpers-nextjs';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 import { Database } from '@/types/supabase';
+import { Button, buttonVariants } from '@/components/ui/button';
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
-export default function AccountForm({ session }: { session: Session | null }) {
-	const supabase = createClientComponentClient<Database>();
-	const [loading, setLoading] = useState(true);
-	const [fullname, setFullname] = useState<string | null>(null);
-	const [username, setUsername] = useState<string | null>(null);
-	const [website, setWebsite] = useState<string | null>(null);
-	const [avatar_url, setAvatarUrl] = useState<string | null>(null);
-	const user = session?.user;
+import { toast } from './ui/use-toast';
 
-	const getProfile = useCallback(async () => {
-		try {
-			setLoading(true);
+const accountSchema = z.object({
+	fullname: z.string().min(1, 'Required'),
+	username: z.string(),
+	website: z.string(),
+	avatar_url: z.string().url(),
+});
 
-			let { data, error, status } = await supabase
-				.from('profiles')
-				.select(`full_name, username, website, avatar_url`)
-				.eq('id', user?.id)
-				.single();
-
-			if (error && status !== 406) {
-				throw error;
-			}
-
-			if (data) {
-				setFullname(data.full_name);
-				setUsername(data.username);
-				setWebsite(data.website);
-				setAvatarUrl(data.avatar_url);
-			}
-		} catch (error) {
-			alert('Error loading user data!');
-		} finally {
-			setLoading(false);
-		}
-	}, [user, supabase]);
-
-	useEffect(() => {
-		getProfile();
-	}, [user, getProfile]);
-
-	async function updateProfile({
-		username,
-		website,
-		avatar_url,
-	}: {
+export default function AccountForm({
+	session,
+	profile,
+}: {
+	session: Session | null;
+	profile: {
+		full_name: string | null;
 		username: string | null;
-		fullname: string | null;
 		website: string | null;
 		avatar_url: string | null;
-	}) {
+	};
+}) {
+	const supabase = createClientComponentClient<Database>();
+	const [loading, setLoading] = useState(false);
+	const user = session?.user;
+
+	const form = useForm<z.infer<typeof accountSchema>>({
+		defaultValues: {
+			fullname: profile.full_name ?? '',
+			username: profile.username ?? '',
+			website: profile.website ?? '',
+			avatar_url: profile.avatar_url ?? '',
+		},
+	});
+
+	const handleSubmit: SubmitHandler<z.infer<typeof accountSchema>> = async (
+		data,
+	) => {
 		try {
 			setLoading(true);
 
 			let { error } = await supabase.from('profiles').upsert({
 				id: user?.id as string,
-				full_name: fullname,
-				username,
-				website,
-				avatar_url,
+				full_name: data.fullname,
+				username: data.username,
+				website: data.website,
+				avatar_url: data.avatar_url,
 				updated_at: new Date().toISOString(),
 			});
 			if (error) throw error;
-			alert('Profile updated!');
+			toast({
+				title: 'Success!',
+				description: 'Account updated.',
+			});
 		} catch (error) {
-			alert('Error updating the data!');
+			console.error(error);
 		} finally {
 			setLoading(false);
 		}
-	}
+	};
 
 	return (
-		<div className='form-widget'>
-			<div>
-				<label htmlFor='email'>Email</label>
-				<input id='email' type='text' value={session?.user.email} disabled />
-			</div>
-			<div>
-				<label htmlFor='fullName'>Full Name</label>
-				<input
-					id='fullName'
-					type='text'
-					value={fullname || ''}
-					onChange={(e) => setFullname(e.target.value)}
+		<Form {...form}>
+			<form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-2'>
+				<FormField
+					control={form.control}
+					name='username'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Username</FormLabel>
+							<FormControl>
+								<Input placeholder='Username' {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
 				/>
-			</div>
-			<div>
-				<label htmlFor='username'>Username</label>
-				<input
-					id='username'
-					type='text'
-					value={username || ''}
-					onChange={(e) => setUsername(e.target.value)}
+				<FormField
+					control={form.control}
+					name='fullname'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Full Name</FormLabel>
+							<FormControl>
+								<Input placeholder='Full name' {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
 				/>
-			</div>
-			<div>
-				<label htmlFor='website'>Website</label>
-				<input
-					id='website'
-					type='url'
-					value={website || ''}
-					onChange={(e) => setWebsite(e.target.value)}
+				<FormField
+					control={form.control}
+					name='website'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Website</FormLabel>
+							<FormControl>
+								<Input placeholder='Website' {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
 				/>
-			</div>
-
-			<div>
-				<button
-					className='button primary block'
-					onClick={() =>
-						updateProfile({ fullname, username, website, avatar_url })
-					}
-					disabled={loading}
-				>
-					{loading ? 'Loading ...' : 'Update'}
-				</button>
-			</div>
-
-			<div>
-				<form action='/auth/signout' method='post'>
-					<button className='button block' type='submit'>
-						Sign out
-					</button>
-				</form>
-			</div>
-		</div>
+				<FormField
+					control={form.control}
+					name='avatar_url'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Avatar Url</FormLabel>
+							<FormControl>
+								<Input placeholder='Avatar Url' {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<div className='flex justify-between'>
+					<Link
+						href='/dashboard'
+						className={buttonVariants({ variant: 'outline' })}
+					>
+						Back to Dashboard
+					</Link>
+					<Button type='submit' disabled={loading}>
+						Save
+					</Button>
+				</div>
+			</form>
+		</Form>
 	);
 }

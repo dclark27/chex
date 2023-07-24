@@ -5,6 +5,8 @@ import { ThemeProvider } from '@/components/theme-provider';
 
 import './globals.css';
 
+import { Toaster } from '@/components/ui/toaster';
+
 export const metadata = {
 	title: {
 		default: siteConfig.name,
@@ -67,6 +69,7 @@ export default function RootLayout({
 					<div className='group fixed bottom-0 right-0 flex  h-24 w-24 items-end justify-end p-2'>
 						<ModeToggle />
 					</div>
+					<Toaster />
 				</ThemeProvider>
 			</body>
 		</html>

@@ -1,12 +1,7 @@
-import type { Route } from 'next';
 import Link from 'next/link';
 import { UserCircle } from 'lucide-react';
 
-export default function NavBar<T extends string>({
-	href,
-}: {
-	href: Route<T> | URL;
-}) {
+export default function NavBar() {
 	return (
 		<nav className='z-40 mb-4 flex flex-row items-center justify-between py-6 pb-5'>
 			<Link href={'/dashboard'}>
