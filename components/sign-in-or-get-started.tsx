@@ -95,7 +95,7 @@ export default function SignInOrGetStarted({
 					name='password'
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Username</FormLabel>
+							<FormLabel>Password</FormLabel>
 							<FormControl>
 								<Input placeholder='Password' type='password' {...field} />
 							</FormControl>
