@@ -22,9 +22,9 @@ import {
 import { Icons } from './icons';
 
 type Assignments = {
+	created_at: string | null;
 	diner_id: number | null;
 	dish_id: number | null;
-	receipt_id: string | null;
 	id: number;
 };
 
@@ -49,8 +49,8 @@ export default function AssignmentsForm(props: AssignmentsFormProps) {
 		newOptimisticAssignments.push({
 			diner_id: dinerId,
 			dish_id: dishId,
-			receipt_id: receiptId,
 			id: -1,
+			created_at: null,
 		});
 		addOptimisticMessage(newOptimisticAssignments);
 		await assignItemToDiner(dinerId, Number(dishId), props.receipt.id);
