@@ -11,6 +11,7 @@ import {
 	Loader2,
 	LogInIcon,
 	LogOut,
+	LucideIcon,
 	LucideProps,
 	Mail,
 	Menu,
@@ -27,7 +28,6 @@ import {
 	UserPlus,
 	UserX2,
 	X,
-	type Icon as LucideIcon,
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
