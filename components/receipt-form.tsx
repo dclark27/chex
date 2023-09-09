@@ -235,7 +235,7 @@ export default function ReceiptForm(props: ReceiptFormProps) {
 								control={form.control}
 								name={`items.${index}.quantity`}
 								render={({ field }) => (
-									<FormItem className='w-14'>
+									<FormItem className='w-16'>
 										<FormLabel>#</FormLabel>
 										<FormControl>
 											<Input type='number' disabled={isPending} {...field} />

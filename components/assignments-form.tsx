@@ -1,6 +1,6 @@
 'use client';
 
-import { useTransition } from 'react';
+import { experimental_useOptimistic as useOptimistic } from 'react';
 import Link from 'next/link';
 
 import { Database } from '@/types/supabase';
@@ -21,31 +21,60 @@ import {
 
 import { Icons } from './icons';
 
+type Assignments = {
+	diner_id: number | null;
+	dish_id: number | null;
+	receipt_id: string | null;
+	id: number;
+};
+
 interface AssignmentsFormProps {
 	receipt: Database['public']['Tables']['receipt']['Row'];
 	items: Database['public']['Tables']['dish']['Row'][];
 	diners: Database['public']['Tables']['diner']['Row'][];
-	assignments: {
-		diner_id: number | null;
-		dish_id: number | null;
-		id: number;
-	}[];
+	assignments: Assignments[];
 }
 
 export default function AssignmentsForm(props: AssignmentsFormProps) {
-	const [isPending, startTransition] = useTransition();
+	const [optimisticAssignments, addOptimisticMessage] = useOptimistic<
+		Assignments[]
+	>(props.assignments);
 
-	const assignItem = async (dinerId: number, dishId: number) => {
-		startTransition(async () => {
-			await assignItemToDiner(dinerId, dishId, props.receipt.id);
+	const handleOptimisticAssignments = async (
+		dinerId: number,
+		dishId: number,
+		receiptId: string,
+	): Promise<void> => {
+		const newOptimisticAssignments = [...optimisticAssignments];
+		newOptimisticAssignments.push({
+			diner_id: dinerId,
+			dish_id: dishId,
+			receipt_id: receiptId,
+			id: -1,
 		});
+		addOptimisticMessage(newOptimisticAssignments);
+		await assignItemToDiner(dinerId, Number(dishId), props.receipt.id);
+	};
+
+	const handleOptimisticUnassign = async (
+		dinerId: number,
+		dishId: number,
+	): Promise<void> => {
+		const optimisticAssignmentsCopy = [...optimisticAssignments];
+		const newOptimisticAssignments = optimisticAssignmentsCopy.filter(
+			(assignment) => {
+				return assignment.diner_id !== dinerId || assignment.dish_id !== dishId;
+			},
+		);
+		addOptimisticMessage(newOptimisticAssignments);
+		await unassignItem(dinerId, Number(dishId), props.receipt.id);
 	};
 
 	const ItemListSelect = ({ dinerId }: { dinerId: number }) => {
 		return (
 			<Select
-				onValueChange={async (item) => {
-					await assignItem(dinerId, Number(item));
+				onValueChange={(item) => {
+					handleOptimisticAssignments(dinerId, Number(item), props.receipt.id);
 				}}
 			>
 				<SelectTrigger className='w-full'>
@@ -58,7 +87,7 @@ export default function AssignmentsForm(props: AssignmentsFormProps) {
 							<SelectItem key={item.id + '-' + index} value={item.id + ''}>
 								<div className='flex items-center justify-between'>
 									{item.name}
-									{props.assignments.some(({ dish_id }) => {
+									{optimisticAssignments.some(({ dish_id }) => {
 										return dish_id === item.id;
 									}) && <Icons.check className='h-4 w-4 opacity-50' />}
 								</div>
@@ -77,7 +106,7 @@ export default function AssignmentsForm(props: AssignmentsFormProps) {
 					return (
 						<div className='flex flex-col' key={diner.id}>
 							<h1 className='text-xl font-semibold'>{diner.name}</h1>
-							{props.assignments.map(({ diner_id, dish_id }) => {
+							{optimisticAssignments.map(({ diner_id, dish_id }) => {
 								if (!diner_id || !dish_id) return null;
 								if (diner.id === diner_id) {
 									return (
@@ -88,12 +117,8 @@ export default function AssignmentsForm(props: AssignmentsFormProps) {
 											<Button
 												size='icon'
 												variant='ghost'
-												onClick={async () => {
-													await unassignItem(
-														diner_id,
-														dish_id,
-														props.receipt.id,
-													);
+												onClick={() => {
+													handleOptimisticUnassign(diner_id, dish_id);
 												}}
 												aria-label='Delete assignment'
 											>
@@ -119,7 +144,6 @@ export default function AssignmentsForm(props: AssignmentsFormProps) {
 					href={`/dashboard/${props.receipt.id}/receipts`}
 					className={buttonVariants({ variant: 'default' })}
 				>
-					{isPending && <Icons.spinner className='mr-2 h-4 w-4 animate-spin' />}
 					Generate Receipts
 				</Link>
 			</div>

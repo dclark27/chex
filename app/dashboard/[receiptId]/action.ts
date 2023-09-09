@@ -33,13 +33,12 @@ export async function unassignItem(
 		.from('diner_dish')
 		.delete()
 		.eq('diner_id', diner_id)
-		.eq('dish_id', dish_id);
+		.eq('dish_id', dish_id)
+		.eq('receipt_id', receipt_id);
 
 	if (error) {
 		throw new Error(error.message);
 	}
-
-	revalidatePath(`/dashboard/${receipt_id}/assignments`);
 
 	return {
 		success: true,
@@ -55,14 +54,12 @@ export async function assignItemToDiner(
 
 	const { data, error } = await supabase
 		.from('diner_dish')
-		.insert([{ diner_id, dish_id }])
+		.insert([{ diner_id, dish_id, receipt_id }])
 		.select();
 
 	if (error) {
 		throw new Error(error.message);
 	}
-
-	revalidatePath(`/dashboard/${receipt_id}/assignments`);
 
 	return data;
 }
@@ -74,7 +71,8 @@ export async function getAssignments(receipt_id: string) {
 
 	const { data: assignmentsTable } = await supabase
 		.from('diner_dish')
-		.select('*');
+		.select('*')
+		.eq('receipt_id', receipt_id);
 
 	return {
 		dinerIds: receipt.diners?.map((diner) => diner.id),
