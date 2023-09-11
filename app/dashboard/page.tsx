@@ -8,7 +8,7 @@ export default async function Page() {
 	const receipts = await getReceipts();
 
 	return (
-		<div className='mx-auto py-10'>
+		<div className='container relative'>
 			<DataTable
 				header='Receipts'
 				columns={columns}

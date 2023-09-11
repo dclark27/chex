@@ -1,11 +1,20 @@
+import { Inter as FontSans } from 'next/font/google';
+
 import { siteConfig } from '@/config/site';
-import { ModeToggle } from '@/components/mode-toggle';
 import { TailwindIndicator } from '@/components/tailwind-indicator';
 import { ThemeProvider } from '@/components/theme-provider';
 
 import './globals.css';
 
+import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
+import { SiteFooter } from '@/components/site-footer';
+import { SiteHeader } from '@/components/site-header';
+
+const fontSans = FontSans({
+	subsets: ['latin'],
+	variable: '--font-sans',
+});
 
 export const metadata = {
 	title: {
@@ -60,18 +69,31 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang='en' suppressHydrationWarning>
-			<head />
-			<body className='min-h-screen bg-background font-sans antialiased'>
-				<ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-					<main className='container'>{children}</main>
-					<TailwindIndicator />
-					<div className='group fixed bottom-0 right-0 flex  h-24 w-24 items-end justify-end p-2'>
-						<ModeToggle />
-					</div>
+		<>
+			<html lang='en' suppressHydrationWarning>
+				<head />
+				<body
+					className={cn(
+						'min-h-screen bg-background font-sans antialiased',
+						fontSans.variable,
+					)}
+				>
+					<ThemeProvider
+						attribute='class'
+						defaultTheme='system'
+						enableSystem
+						disableTransitionOnChange
+					>
+						<div className='relative flex min-h-screen flex-col'>
+							<SiteHeader />
+							<div className='flex-1'>{children}</div>
+							<SiteFooter />
+						</div>
+						<TailwindIndicator />
+					</ThemeProvider>
 					<Toaster />
-				</ThemeProvider>
-			</body>
-		</html>
+				</body>
+			</html>
+		</>
 	);
 }

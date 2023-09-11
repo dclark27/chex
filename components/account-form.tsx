@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import {
 	createClientComponentClient,
 	Session,
@@ -10,7 +9,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { Database } from '@/types/supabase';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import {
 	Form,
 	FormControl,
@@ -137,12 +136,6 @@ export default function AccountForm({
 					)}
 				/>
 				<div className='flex justify-between'>
-					<Link
-						href='/dashboard'
-						className={buttonVariants({ variant: 'outline' })}
-					>
-						Back to Dashboard
-					</Link>
 					<Button type='submit' disabled={loading}>
 						Save
 					</Button>
