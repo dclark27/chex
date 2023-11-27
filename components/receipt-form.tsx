@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import currency from 'currency.js';
+import { DevTool } from "@hookform/devtools";
 import {
 	SubmitErrorHandler,
 	SubmitHandler,
@@ -193,6 +194,12 @@ export default function ReceiptForm(props: ReceiptFormProps) {
 	) => {
 		startTransition(async () => {
 			try {
+				const items = data.items.map((item) => ({
+					price: currency(item.price).value,
+					quantity: parseInt(item.quantity),
+					name: item.name,
+					id: item.id,
+				}));
 				await updateReceipt(
 					{
 						tax: currency(data.tax).value,
@@ -201,12 +208,7 @@ export default function ReceiptForm(props: ReceiptFormProps) {
 						total: currency(subtotal).add(tax).add(tip).value,
 						id: receipt.id,
 					},
-					data.items.map((item) => ({
-						price: currency(item.price).value,
-						quantity: parseInt(item.quantity),
-						name: item.name,
-						id: item.id,
-					})),
+					items,
 					diners,
 				);
 				router.push(`/dashboard/${receipt.id}/diners`);
@@ -421,6 +423,7 @@ export default function ReceiptForm(props: ReceiptFormProps) {
 					</Button>
 				</div>
 			</form>
+			<DevTool control={form.control} />
 		</Form>
 	);
 }
