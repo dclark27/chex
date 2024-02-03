@@ -161,9 +161,9 @@ export async function updateReceipt(
 			const { error } = await supabase
 				.from('dish')
 				.insert({
-					quantity: item.quantity,
-					price: item.price,
 					name: item.name,
+					price: item.price,
+					quantity: item.quantity,
 					receipt_id: receipt.id,
 				})
 				.select();
@@ -219,7 +219,8 @@ export async function getReceipt(uuid: string) {
 
 	const { data: assignmentsTable } = await supabase
 		.from('diner_dish')
-		.select('*');
+		.select('*')
+		.eq('receipt_id', receipt.id);
 
 	return {
 		receipt,
