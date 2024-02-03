@@ -16,7 +16,7 @@ export default async function Account() {
 	let { data, error, status } = await supabase
 		.from('profiles')
 		.select(`full_name, username, website, avatar_url`)
-		.eq('id', session?.user?.id)
+		.eq('id', session?.user?.id ?? '')
 		.single();
 
 	if (!data) {

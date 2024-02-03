@@ -148,7 +148,7 @@ export async function updateReceipt(
 			const { error } = await supabase
 				.from('diner')
 				.update(diner)
-				.eq('id', diner.id)
+				.eq('id', diner.id ?? '')
 				.select();
 			if (error) {
 				throw new Error('Error updating diner: ' + error.message);
