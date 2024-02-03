@@ -37,24 +37,88 @@ export default async function Page({ params }: ReceiptsPageProps) {
 		});
 	});
 	const receiptDate = new Date(receipt.receipt.receiptDate || Date.now());
+
+	const tax = receipt?.receipt?.tax || 0;
+	const subtotal = receipt?.receipt?.subtotal || 1;
+	const tip = receipt?.receipt?.tip || 0;
+
+	const taxRate = tax !== 0 ? tax / subtotal : 0;
+	const tipRate = tip !== 0 ? tip / (subtotal + tax) : 0;
+
 	return (
 		<div className='flex max-w-sm flex-col gap-5'>
 			<div className='flex flex-row items-end justify-between'>
 				<span className='text-2xl font-semibold'> {receipt.receipt.notes}</span>
 				<span className='text-sm'>{receiptDate.toLocaleDateString()}</span>
 			</div>
+			<Card>
+				<CardHeader>
+					<CardTitle>{receipt.receipt.notes}</CardTitle>
+				</CardHeader>
+				<CardContent>
+					{receipt?.items?.map((item, index) => {
+						if (!item.price || !item) {
+							return null;
+						}
+						return (
+							<div key={index} className='flex justify-between'>
+								<span className='text-xs'>{item.name}</span>
+								<span className='text-xs'>{currency(item.price).format()}</span>
+							</div>
+						);
+					})}
+				</CardContent>
+				<CardFooter className='flex w-full flex-col'>
+					<div className='flex w-full justify-between'>
+						<span className='text-xs'>Subtotal</span>
+						<span className='text-xs'>{currency(subtotal).format()}</span>
+					</div>
+					<div className='flex w-full justify-between'>
+						<span className='text-xs'>Tax</span>
+						<span className='text-xs'>{currency(tax).format()}</span>
+					</div>{' '}
+					<div className='flex w-full justify-between'>
+						<span className='text-xs'>Tip</span>
+						<span className='text-xs'>{currency(tip).format()}</span>
+					</div>
+					<div className='flex w-full justify-between'>
+						<span className='text-xs font-bold'>Total</span>
+						<span className='text-xs font-bold'>
+							{currency(tip + tax + subtotal).format()}
+						</span>
+					</div>
+				</CardFooter>
+			</Card>
 			{receipt?.diners?.map((diner) => {
-				let total = 0;
-				const taxRate =
-					receipt?.receipt?.tax !== 0
-						? (receipt?.receipt?.tax || 0) / (receipt?.receipt?.total || 1)
-						: 0;
-				const tipRate =
-					receipt?.receipt?.tip !== 0
-						? (receipt?.receipt?.tip || 0) / (receipt?.receipt?.total || 1)
-						: 0;
+				let subtotal = 0;
 				const items = assignmentsMap[diner.id];
 				if (!diner || !items) return null;
+				items.map((item, index) => {
+					if (!item.price || !item) {
+						return null;
+					}
+
+					// Count the number of other diners with this item
+					let count = 0;
+
+					Object.keys(assignmentsMap).forEach((key) => {
+						const usersDishes = assignmentsMap[key];
+						if (!usersDishes) return;
+						usersDishes.forEach((dish) => {
+							if (dish.id === item.id) {
+								count++;
+							}
+						});
+					});
+
+					const price = item.price / count;
+
+					subtotal += price;
+				});
+
+				const dinerTax = taxRate * subtotal;
+				const dinerTip = tipRate * (subtotal + taxRate * subtotal);
+				const dinerTotal = dinerTip + dinerTax + subtotal;
 
 				return (
 					<Card key={diner.id}>
@@ -82,8 +146,6 @@ export default async function Page({ params }: ReceiptsPageProps) {
 
 								const price = item.price / count;
 
-								total += price;
-
 								return (
 									<div key={index} className='flex justify-between'>
 										<span className='text-xs'>{item.name}</span>
@@ -95,24 +157,20 @@ export default async function Page({ params }: ReceiptsPageProps) {
 						<CardFooter className='flex w-full flex-col'>
 							<div className='flex w-full justify-between'>
 								<span className='text-xs'>Subtotal</span>
-								<span className='text-xs'>{currency(total).format()}</span>
+								<span className='text-xs'>{currency(subtotal).format()}</span>
 							</div>
 							<div className='flex w-full justify-between'>
 								<span className='text-xs'>Tax</span>
-								<span className='text-xs'>
-									{currency(taxRate * total).format()}
-								</span>
-							</div>{' '}
+								<span className='text-xs'>{currency(dinerTax).format()}</span>
+							</div>
 							<div className='flex w-full justify-between'>
 								<span className='text-xs'>Tip</span>
-								<span className='text-xs'>
-									{currency(tipRate * total).format()}
-								</span>
+								<span className='text-xs'>{currency(dinerTip).format()}</span>
 							</div>
 							<div className='flex w-full justify-between'>
 								<span className='text-xs font-bold'>Total</span>
 								<span className='text-xs font-bold'>
-									{currency(tipRate * total + taxRate * total + total).format()}
+									{currency(dinerTotal).format()}
 								</span>
 							</div>
 						</CardFooter>
