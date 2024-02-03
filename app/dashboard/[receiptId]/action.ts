@@ -148,7 +148,7 @@ export async function updateReceipt(
 			const { error } = await supabase
 				.from('diner')
 				.update(diner)
-				.eq('id', diner.id)
+				.eq('id', diner.id ?? '')
 				.select();
 			if (error) {
 				throw new Error('Error updating diner: ' + error.message);
@@ -172,13 +172,18 @@ export async function updateReceipt(
 				throw new Error('Error adding item: ' + error.message);
 			}
 		} else {
-			const { error } = await supabase
-				.from('dish')
-				.update(item)
-				.eq('id', item.id)
-				.select();
-			if (error) {
-				throw new Error('Error updating item: ' + error.message);
+			if (item.id) {
+				const { error } = await supabase
+					.from('dish')
+					.update(item)
+					.eq('id', item.id)
+					.select();
+
+				if (error) {
+					throw new Error('Error updating item: ' + error.message);
+				}
+			} else {
+				throw new Error('No item ID provided.');
 			}
 		}
 	});

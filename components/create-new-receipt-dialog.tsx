@@ -1,13 +1,11 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import * as z from 'zod';
 
 import '@uploadthing/react/styles.css';
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { UploadDropzone } from '@uploadthing/react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -18,14 +16,12 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@/components/ui/dialog';
-import { OurFileRouter } from '@/app/api/uploadthing/core';
+
 import { processReceipt } from '@/app/dashboard/action';
 
 import { Icons } from './icons';
+import { UploadDropzone } from '@/utils/uploadthing';
 
-const formSchema = z.object({
-	url: z.string().url(),
-});
 
 const CreateNewReceipt = () => {
 	const router = useRouter();
@@ -56,11 +52,11 @@ const CreateNewReceipt = () => {
 					</DialogDescription>
 				</DialogHeader>
 				{!url && (
-					<UploadDropzone<OurFileRouter>
+					<UploadDropzone
 						endpoint='imageUploader'
 						onClientUploadComplete={(res) => {
 							if (res && res.length > 0) {
-								setUrl(res[0].fileUrl);
+								setUrl(res[0].url);
 							}
 						}}
 						onUploadError={(error: Error) => {

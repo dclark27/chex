@@ -57,7 +57,7 @@ export async function updateReceipt(
 	const { data, error } = await supabase
 		.from('receipt')
 		.update({ ...request })
-		.eq('id', request.id)
+		.eq('id', request.id ?? '')
 		.select();
 
 	revalidatePath('/dashboard');
