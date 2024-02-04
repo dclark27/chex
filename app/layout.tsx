@@ -1,3 +1,5 @@
+import { SpeedInsights } from '@vercel/speed-insights/next';
+
 import { siteConfig } from '@/config/site';
 import { ModeToggle } from '@/components/mode-toggle';
 import { TailwindIndicator } from '@/components/tailwind-indicator';
@@ -54,6 +56,7 @@ export default function RootLayout({
 					</div>
 					<Toaster />
 				</ThemeProvider>
+				<SpeedInsights />
 			</body>
 		</html>
 	);
