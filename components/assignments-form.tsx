@@ -1,6 +1,6 @@
 'use client';
 
-import { useOptimistic } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 
 import { Database } from '@/types/supabase';
@@ -36,9 +36,9 @@ interface AssignmentsFormProps {
 }
 
 export default function AssignmentsForm(props: AssignmentsFormProps) {
-	const [optimisticAssignments, addOptimisticMessage] = useOptimistic<
-		Assignments[]
-	>(props.assignments);
+	const [optimisticAssignments, addOptimisticMessage] = useState<Assignments[]>(
+		props.assignments,
+	);
 
 	const handleOptimisticAssignments = async (
 		dinerId: number,
