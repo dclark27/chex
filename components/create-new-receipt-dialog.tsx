@@ -6,6 +6,7 @@ import '@uploadthing/react/styles.css';
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { UploadDropzone } from '@/utils/uploadthing';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -16,15 +17,16 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@/components/ui/dialog';
-
 import { processReceipt } from '@/app/dashboard/action';
 
 import { Icons } from './icons';
-import { UploadDropzone } from '@/utils/uploadthing';
-
 
 const CreateNewReceipt = () => {
 	const router = useRouter();
+	const [error, setError] = useState<{
+		message: string;
+		description: string;
+	}>();
 	const [isPending, startTransition] = useTransition();
 	const [open, setOpen] = useState(false);
 	const [url, setUrl] = useState('');
@@ -32,7 +34,16 @@ const CreateNewReceipt = () => {
 	const handleCreateReceipt = async () => {
 		startTransition(async () => {
 			const receipt = await processReceipt(url);
-			router.push(`/dashboard/${receipt.id}/items`);
+			if ('errorKey' in receipt) {
+				console.error(receipt);
+				setError({
+					message: receipt.message,
+					description: receipt.description ?? 'An unknown error occurred',
+				});
+				return;
+			} else {
+				router.push(`/dashboard/${receipt.id}/items`);
+			}
 		});
 	};
 
@@ -47,9 +58,13 @@ const CreateNewReceipt = () => {
 				<DialogHeader>
 					<DialogTitle>Create New Receipt</DialogTitle>
 					<DialogDescription>
-						Upload a photo of your receipt to get started, or skip to the next
-						step
+						Upload a photo of your receipt to get started
 					</DialogDescription>
+					{error && (
+						<div className='mt-4 p-4 bg-red-100 text-red-600 rounded-lg'>
+							{error.message + ': ' + error.description}
+						</div>
+					)}
 				</DialogHeader>
 				{!url && (
 					<UploadDropzone
