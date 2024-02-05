@@ -1,5 +1,10 @@
-import Link from 'next/link';
+'use client';
 
+import { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+import { cn } from '@/lib/utils';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -8,8 +13,25 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 import { Icons } from './icons';
+import { Button, buttonVariants } from './ui/button';
 
 export default function NavBar() {
+	const [isLoggingOut, setIsLoggingOut] = useState(false);
+	const router = useRouter();
+	const logout = async () => {
+		setIsLoggingOut(true);
+		await fetch('/auth/signout', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+		})
+			.then(() => {
+				router.push('/login');
+			})
+			.finally(() => {
+				setIsLoggingOut(false);
+			});
+	};
+
 	return (
 		<nav className='text-black z-40 mb-4 py-6 pb-5 bg-primary rounded-b-2xl w-full px-2'>
 			<div className='container flex flex-row items-center justify-between'>
@@ -22,21 +44,35 @@ export default function NavBar() {
 					<DropdownMenuTrigger>
 						<Icons.menu />
 					</DropdownMenuTrigger>
-					<DropdownMenuContent>
+					<DropdownMenuContent className='flex items-center justify-center flex-col'>
 						<DropdownMenuItem>
-							<Link href='/account' className='flex flex-row'>
+							<Link
+								href='/dashboard'
+								className={cn(buttonVariants({ variant: 'ghost' }))}
+							>
+								<Icons.home className='w-4 h-4 mr-2' />
+								Dashboard
+							</Link>
+						</DropdownMenuItem>
+						<DropdownMenuItem>
+							<Link
+								href='/account'
+								className={cn(buttonVariants({ variant: 'ghost' }))}
+							>
 								<Icons.user className='w-4 h-4 mr-2' />
 								Edit Profile
 							</Link>
 						</DropdownMenuItem>
-						<form action='/auth/signout' method='post'>
-							<DropdownMenuItem asChild>
-								<button type='submit' className='w-full'>
-									<Icons.logout className='w-4 h-4 mr-2' />
-									Sign out
-								</button>
-							</DropdownMenuItem>
-						</form>
+
+						<DropdownMenuItem>
+							<Button onClick={logout} variant='ghost' disabled={isLoggingOut}>
+								{!isLoggingOut && <Icons.logout className='w-4 h-4 mr-2' />}
+								{isLoggingOut && (
+									<Icons.spinner className='mr-2 h-4 w-4 animate-spin' />
+								)}
+								Sign out
+							</Button>
+						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
 			</div>

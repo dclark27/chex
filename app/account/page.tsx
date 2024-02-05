@@ -2,6 +2,7 @@ import { cookies } from 'next/headers';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 
 import { Database } from '@/types/supabase';
+import { Button } from '@/components/ui/button';
 import AccountForm from '@/components/account-form';
 import NavBar from '@/components/nav-bar';
 
@@ -25,9 +26,18 @@ export default async function Account() {
 	return (
 		<>
 			<NavBar />
-			<div className='container'>
+			<div className='container max-w-sm'>
 				<h1 className='text-2xl font-extrabold mb-10'>Edit your profile</h1>
 				<AccountForm session={session} profile={data} />
+				<form action='/auth/signout' method='post' className='mt-10'>
+					<Button
+						className='button block w-full'
+						type='submit'
+						variant='secondary'
+					>
+						Sign out
+					</Button>
+				</form>
 			</div>
 		</>
 	);
