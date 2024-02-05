@@ -47,9 +47,10 @@ export default function RootLayout({
 	return (
 		<html lang='en' suppressHydrationWarning>
 			<head />
+
 			<body className='min-h-screen bg-background font-sans antialiased'>
 				<ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-					<main className='container'>{children}</main>
+					{children}
 					<TailwindIndicator />
 					<div className='group fixed bottom-0 right-0 flex  h-24 w-24 items-end justify-end p-2'>
 						<ModeToggle />
