@@ -74,5 +74,5 @@ export default withUt({
       },
     },
   },
-  plugins: ["prettier-plugin-tailwindcss", "tailwindcss-animate"],
+  plugins: ["tailwindcss-animate"],
 });
