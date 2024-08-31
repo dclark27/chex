@@ -1,5 +1,4 @@
 {
-	"$schema": "https://json.schemastore.org/eslintrc",
 	"root": true,
 	"extends": [
 		"next/core-web-vitals",
@@ -8,7 +7,7 @@
 		"plugin:react-hooks/recommended",
 		"plugin:react/jsx-runtime"
 	],
-	"plugins": ["tailwindcss", "testing-library", "jest-dom", "unused-imports"],
+	"plugins": ["testing-library", "jest-dom", "unused-imports"],
 	"rules": {
 		"@next/next/no-html-link-for-pages": "off",
 		"react/jsx-key": "off",
@@ -18,10 +17,6 @@
 		"unused-imports/no-unused-imports": "error"
 	},
 	"settings": {
-		"tailwindcss": {
-			"callees": ["cn"],
-			"config": "tailwind.config.js"
-		},
 		"next": {
 			"rootDir": true
 		}

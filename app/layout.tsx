@@ -49,7 +49,7 @@ export default function RootLayout({
 				<ThemeProvider attribute='class' defaultTheme='system' enableSystem>
 					<main className='container'>{children}</main>
 					<TailwindIndicator />
-					<div className='group fixed bottom-0 right-0 flex  h-24 w-24 items-end justify-end p-2'>
+					<div className='group fixed bottom-0 right-0 flex h-24 w-24 items-end justify-end p-2'>
 						<ModeToggle />
 					</div>
 					<Toaster />

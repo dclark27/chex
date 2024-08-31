@@ -60,11 +60,11 @@ export default function DinersForm(props: AssignmentsFormProps) {
 								name: '',
 								id: -1,
 							},
-					  ]
+						]
 					: props.diners.map((diner) => ({
 							name: diner.name ?? '',
 							id: diner.id,
-					  })),
+						})),
 		},
 	});
 

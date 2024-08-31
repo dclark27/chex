@@ -61,7 +61,7 @@ const CreateNewReceipt = () => {
 						Upload a photo of your receipt to get started
 					</DialogDescription>
 					{error && (
-						<div className='mt-4 p-4 bg-red-100 text-red-600 rounded-lg'>
+						<div className='mt-4 rounded-lg bg-red-100 p-4 text-red-600'>
 							{error.message + ': ' + error.description}
 						</div>
 					)}

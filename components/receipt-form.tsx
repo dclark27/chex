@@ -3,9 +3,9 @@
 import { useTransition } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { DevTool } from '@hookform/devtools';
 import { zodResolver } from '@hookform/resolvers/zod';
 import currency from 'currency.js';
-import { DevTool } from "@hookform/devtools";
 import {
 	SubmitErrorHandler,
 	SubmitHandler,
@@ -160,14 +160,14 @@ export default function ReceiptForm(props: ReceiptFormProps) {
 						name: item.name || '',
 						price: currency(item.price || 0).format(),
 						id: item.id || -1,
-				  }))
+					}))
 				: [
 						{
 							quantity: '',
 							name: '',
 							price: currency(0).format(),
 						},
-				  ],
+					],
 			subtotal: currency(receipt.subtotal || 0).format(),
 			tax: currency(receipt.tax || 0).format(),
 			tip: currency(receipt.tip || 0).format(),
