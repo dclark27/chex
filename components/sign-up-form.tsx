@@ -9,6 +9,7 @@ import {
 	User,
 } from '@supabase/auth-helpers-nextjs';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import * as z from 'zod';
 
 import { Database } from '@/types/supabase';
@@ -24,7 +25,6 @@ import {
 import { Input } from '@/components/ui/input';
 
 import { Icons } from './icons';
-import { toast } from './ui/use-toast';
 
 const formSchema = z.object({
 	email: z.string().email(),
@@ -61,18 +61,13 @@ export default function SignUpForm({
 				password: values.password,
 			});
 			if (error) {
-				toast({
-					variant: 'destructive',
-					title: 'Error',
-					description:
-						error.message ?? 'There was an error creating your account.',
-				});
+				toast.error(
+					error.message ?? 'There was an error creating your account.',
+				);
 			} else {
-				toast({
-					title: 'Success!',
-					description:
-						'Your account has been created and an email has been sent. Please check your inbox.',
-				});
+				toast.success(
+					'Your account has been created and an email has been sent. Please check your inbox.',
+				);
 				router.push('/login');
 			}
 		} catch (error) {

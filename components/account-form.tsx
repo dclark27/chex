@@ -1,12 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import {
 	createClientComponentClient,
 	Session,
 } from '@supabase/auth-helpers-nextjs';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { Database } from '@/types/supabase';
@@ -20,8 +20,6 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-
-import { toast } from './ui/use-toast';
 
 const accountSchema = z.object({
 	fullname: z.string().min(1, 'Required'),
@@ -70,11 +68,11 @@ export default function AccountForm({
 				updated_at: new Date().toISOString(),
 			});
 			if (error) throw error;
-			toast({
-				title: 'Success!',
-				description: 'Account updated.',
-			});
+			toast.success('Account updated.');
 		} catch (error) {
+			toast.error(
+				(error as Error).message ?? 'There was an error updating your account.',
+			);
 			console.error(error);
 		} finally {
 			setLoading(false);

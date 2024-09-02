@@ -9,6 +9,7 @@ import {
 	User,
 } from '@supabase/auth-helpers-nextjs';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import * as z from 'zod';
 
 import { Database } from '@/types/supabase';
@@ -24,7 +25,6 @@ import {
 import { Input } from '@/components/ui/input';
 
 import { Icons } from './icons';
-import { toast } from './ui/use-toast';
 
 const formSchema = z.object({
 	email: z.string().email(),
@@ -61,11 +61,7 @@ export default function SignInForm({
 				password: values.password,
 			});
 			if (error) {
-				toast({
-					variant: 'destructive',
-					title: 'Error',
-					description: error.message ?? 'There was an error signing in.',
-				});
+				toast.error(error.message ?? 'There was an error signing in.');
 			} else {
 				router.push('/dashboard');
 			}

@@ -1,11 +1,8 @@
 import { siteConfig } from '@/config/site';
-import { ModeToggle } from '@/components/mode-toggle';
-import { TailwindIndicator } from '@/components/tailwind-indicator';
+import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/components/theme-provider';
 
 import './globals.css';
-
-import { Toaster } from '@/components/ui/toaster';
 
 export const metadata = {
 	title: {

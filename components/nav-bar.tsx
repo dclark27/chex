@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { UserCircle } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { toast } from 'sonner';
 
 import { cn } from '@/lib/utils';
 import {
@@ -13,8 +13,6 @@ import {
 } from '@/components/ui/collapsible';
 
 import { Icons } from './icons';
-import { Button } from './ui/button';
-import { toast } from './ui/use-toast';
 
 export default function NavBar() {
 	const { theme, setTheme } = useTheme();
@@ -27,24 +25,15 @@ export default function NavBar() {
 	const toggleTheme = () => {
 		if (theme === 'dark') {
 			setTheme('light');
-			toast({
-				title: 'Theme changed',
-				description: 'Light mode enabled',
-			});
+			toast.info('Light mode enabled');
 		}
 		if (theme === 'light') {
 			setTheme('system');
-			toast({
-				title: 'Theme changed',
-				description: 'System mode enabled',
-			});
+			toast.info('System mode enabled');
 		}
 		if (theme === 'system') {
 			setTheme('dark');
-			toast({
-				title: 'Theme changed',
-				description: 'Dark mode enabled',
-			});
+			toast.info('Dark mode enabled');
 		}
 	};
 
