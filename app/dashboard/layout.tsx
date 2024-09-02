@@ -8,7 +8,7 @@ export default function AuthenticatedLayout({ children }: EditorProps) {
 	return (
 		<>
 			<NavBar />
-			{children}
+			<main className='px-4'>{children}</main>
 		</>
 	);
 }

@@ -11,7 +11,7 @@ export default withUt({
 	],
 	theme: {
 		container: {
-			center: true,
+			center: 'true',
 			padding: '2rem',
 			screens: {
 				'2xl': '1400px',
@@ -60,17 +60,49 @@ export default withUt({
 			},
 			keyframes: {
 				'accordion-down': {
-					from: { height: 0 },
-					to: { height: 'var(--radix-accordion-content-height)' },
+					from: {
+						height: '0',
+					},
+					to: {
+						height: 'var(--radix-accordion-content-height)',
+					},
 				},
 				'accordion-up': {
-					from: { height: 'var(--radix-accordion-content-height)' },
-					to: { height: 0 },
+					from: {
+						height: 'var(--radix-accordion-content-height)',
+					},
+					to: {
+						height: '0',
+					},
+				},
+				'collapsible-down': {
+					from: { height: '0' },
+					to: { height: 'var(--radix-collapsible-content-height)' },
+				},
+				'collapsible-up': {
+					from: { height: 'var(--radix-collapsible-content-height)' },
+					to: { height: '0' },
+				},
+				openmenu: {
+					// initial position
+					'0%': { left: '-224px' },
+					// final position
+					'100%': { left: '0px' },
+				},
+				closemenu: {
+					// initial position
+					'0%': { left: '0px' },
+					// final position
+					'100%': { left: '-224px' },
 				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
+				'collapsible-down': 'collapsible-down 0.2s ease-out',
+				'collapsible-up': 'collapsible-up 0.2s ease-out',
+				openmenu: 'openmenu 1s ease-in',
+				closemenu: 'closemenu 1s ease-in',
 			},
 		},
 	},

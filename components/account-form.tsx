@@ -136,13 +136,7 @@ export default function AccountForm({
 						</FormItem>
 					)}
 				/>
-				<div className='flex justify-between'>
-					<Link
-						href='/dashboard'
-						className={buttonVariants({ variant: 'outline' })}
-					>
-						Back to Dashboard
-					</Link>
+				<div className='flex justify-end pt-2'>
 					<Button type='submit' disabled={loading}>
 						Save
 					</Button>

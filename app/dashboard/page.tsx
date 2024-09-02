@@ -8,14 +8,8 @@ export default async function Page() {
 	const receipts = await getReceipts();
 
 	return (
-		<div className='mx-auto py-10'>
-			<DataTable
-				header='Receipts'
-				columns={columns}
-				data={receipts || []}
-				defaultSort={[{ id: 'created_at', desc: false }]}
-				action={<CreateNewReceipt />}
-			/>
+		<div className='flex flex-col gap-2'>
+			<CreateNewReceipt />
 		</div>
 	);
 }

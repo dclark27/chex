@@ -1,9 +1,12 @@
 import { cookies } from 'next/headers';
+import Link from 'next/link';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 
 import { Database } from '@/types/supabase';
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import AccountForm from '@/components/account-form';
+import { Icons } from '@/components/icons';
 import NavBar from '@/components/nav-bar';
 
 export default async function Account() {
@@ -13,7 +16,7 @@ export default async function Account() {
 		data: { session },
 	} = await supabase.auth.getSession();
 
-	let { data, error, status } = await supabase
+	let { data } = await supabase
 		.from('profiles')
 		.select(`full_name, username, website, avatar_url`)
 		.eq('id', session?.user?.id ?? '')
@@ -26,19 +29,21 @@ export default async function Account() {
 	return (
 		<>
 			<NavBar />
-			<div className='container max-w-sm'>
-				<h1 className='text-xl font-semibold'>Edit your profile</h1>
-				<AccountForm session={session} profile={data} />
-				<form action='/auth/signout' method='post' className='mt-10'>
-					<Button
-						className='button block w-full'
-						type='submit'
-						variant='secondary'
-					>
-						Sign out
-					</Button>
-				</form>
-			</div>
+			<main className='mx-2 flex flex-col'>
+				<span className='mb-4 text-sm text-muted-foreground'>
+					<Link href='/dashboard' className='flex flex-row items-center gap-2'>
+						<Icons.chevronLeft /> Back to Dashboard
+					</Link>
+				</span>
+				<Card>
+					<CardHeader className='text-lg font-bold'>
+						Edit your profile
+					</CardHeader>
+					<CardContent>
+						<AccountForm session={session} profile={data} />
+					</CardContent>
+				</Card>
+			</main>
 		</>
 	);
 }

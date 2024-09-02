@@ -44,16 +44,14 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang='en' suppressHydrationWarning>
-			<head />
-			<body className='min-h-screen bg-background font-sans antialiased'>
+			<head>
+				<meta name='viewport' content='width=device-width, initial-scale=1.0' />
+			</head>
+			<body className='bg-zinc-50 dark:bg-zinc-900'>
 				<ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-					<main className='container'>{children}</main>
-					<TailwindIndicator />
-					<div className='group fixed bottom-0 right-0 flex h-24 w-24 items-end justify-end p-2'>
-						<ModeToggle />
-					</div>
-					<Toaster />
+					<div className='overflow-hidden'>{children}</div>
 				</ThemeProvider>
+				<Toaster />
 			</body>
 		</html>
 	);

@@ -54,7 +54,7 @@ export function DataTable<TData, TValue>({
 	});
 
 	return (
-		<div>
+		<>
 			<div className='mb-4 flex flex-row items-center justify-between'>
 				<Typography variant='h6'>{header}</Typography>
 				<div className='flex flex-row items-center gap-2'>
@@ -131,6 +131,6 @@ export function DataTable<TData, TValue>({
 					{'Next'}
 				</Button>
 			</div>
-		</div>
+		</>
 	);
 }
